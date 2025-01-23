@@ -1,0 +1,13 @@
+[package]
+name = "sifli-hal"
+version = "0.0.0"
+edition = "2021"
+authors = ["OpenSiFli"]
+description = "Hardware Abstraction Layer (HAL) for SiFli MCUs"
+repository = "https://github.com/OpenSiFli/sifli-hal"
+documentation = "https://docs.rs/sifli-hal"
+homepage = "https://github.com/OpenSiFli/sifli-hal"
+readme = "README.md"
+license = "MIT OR Apache-2.0"
+
+[dependencies]
