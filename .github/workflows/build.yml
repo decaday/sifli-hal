@@ -1,0 +1,32 @@
+name: Build
+
+on:
+  push:
+    branches: [ "main" ]
+  pull_request:
+    branches: [ "main" ]
+
+env:
+  CARGO_TERM_COLOR: always
+
+jobs:
+  build:
+
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v4
+    - name: Install rust targets, linker
+      run: |
+        rustup target add thumbv8m.main-none-eabi
+        rustup target add thumbv8m.main-none-eabihf
+        cargo install flip-link
+    - name: Build Only sf32lb52x
+      run: cargo build --verbose --features "sf32lb52x rt defmt"
+    - name: Build Examples
+      run: |
+        for d in $(ls -1 ./examples); do
+          if [ -f "./examples/$d/Cargo.toml" ]; then
+            (cd ./examples/$d && cargo build --release)
+          fi
+        done
