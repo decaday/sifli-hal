@@ -4,6 +4,8 @@ version = "0.0.0"
 edition = "2021"
 authors = ["OpenSiFli"]
 description = "Hardware Abstraction Layer (HAL) for SiFli MCUs"
+categories = ["hardware-support", "embedded", "no-std"]
+keywords = ["hal", "sf32", "sifli"]
 repository = "https://github.com/OpenSiFli/sifli-hal"
 documentation = "https://docs.rs/sifli-hal"
 homepage = "https://github.com/OpenSiFli/sifli-hal"
@@ -11,3 +13,50 @@ readme = "README.md"
 license = "MIT OR Apache-2.0"
 
 [dependencies]
+# sifli-pac = { version = "0.0.0", path = "../sifli-pac" }
+sifli-pac = { git = "https://github.com/OpenSiFli/sifli-pac" }
+
+embassy-sync = { version = "0.6.2" }
+embassy-time-driver = { version = "0.2", optional = true }
+embassy-time-queue-utils = { version = "0.1", optional = true }
+embassy-time = { version = "0.4.0" }
+embassy-futures = { version = "0.1.0" }
+embassy-embedded-hal = { version = "0.3.0" }
+# prio-bits-3: sf32lb52, 55, 56, 58
+embassy-hal-internal = { version = "0.2.0", features = ["cortex-m", "prio-bits-3"] }
+
+defmt = { version = "0.3.10", optional = true }
+log = { version = "0.4.14", optional = true }
+critical-section = "1.2.0"
+cortex-m-rt = "0.7.5"
+
+embedded-hal-02 = { package = "embedded-hal", version = "0.2.6", features = ["unproven"] }
+embedded-hal-1 = { package = "embedded-hal", version = "1.0" }
+embedded-hal-async = { version = "1.0" }
+embedded-hal-nb = { version = "1.0" }
+
+embedded-io = { version = "0.6.1" }
+embedded-io-async = { version = "0.6.1" }
+embedded-storage = { version = "0.3" }
+embedded-storage-async = { version = "0.4.1" }
+
+[features]
+# default = ["rt"]
+default = ["rt", "defmt", "sf32lb52x"]
+
+rt = ["sifli-pac/rt"]
+defmt = ["dep:defmt", 
+    "sifli-pac/defmt",
+    "embassy-hal-internal/defmt",
+]
+
+log = ["dep:log"]
+
+
+## Reexport the PAC for the currently enabled chip at `sifli_hal::pac`.
+## This is unstable because semver-minor (non-breaking) releases of `sifli-hal` may major-bump (breaking) the PAC version.
+## If this is an issue for you, you're encouraged to directly depend on a fixed version of the PAC.
+## There are no plans to make this stable.
+unstable-pac = []
+
+sf32lb52x = ["sifli-pac/sf32lb52x"]

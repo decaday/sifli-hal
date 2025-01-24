@@ -1,0 +1,9 @@
+[target.thumbv8m.main-none-eabi]
+runner = 'probe-rs run --chip SF32LB52x'
+linker= "flip-link"
+
+[build]
+target = "thumbv8m.main-none-eabi"
+
+[env]
+DEFMT_LOG = "info"
