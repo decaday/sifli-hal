@@ -1,3 +1,5 @@
+use std::mem::offset_of;
+
 use crate::ptab;
 
 pub(crate) mod structure;
@@ -26,11 +28,14 @@ impl Ftab {
         let used_hcpu = if let Some(hcpu) = table.hcpu_code_info.clone() {
             self.structure.ftab.hcpu.base = hcpu.start_addr;
             self.structure.ftab.hcpu.xip_base = hcpu.start_addr;
-            self.structure.ftab.hcpu.size = hcpu.size;
+            // To be consist with ftab.c
+            self.structure.ftab.hcpu.size = 0x200_000;
+            // self.structure.ftab.hcpu.size = hcpu.size;
 
             self.structure.ftab.hcpu2.base = hcpu.start_addr;
             self.structure.ftab.hcpu2.xip_base = hcpu.start_addr;
-            self.structure.ftab.hcpu2.size = hcpu.size;
+            self.structure.ftab.hcpu2.size = 0x200_000;
+            // self.structure.ftab.hcpu2.size = hcpu.size;
             true
         } else {
             false
@@ -39,11 +44,13 @@ impl Ftab {
         let used_lcpu = if let Some(lcpu) = table.lcpu_code_info.clone() {
             self.structure.ftab.lcpu.base = lcpu.start_addr;
             self.structure.ftab.lcpu.xip_base = lcpu.start_addr;
-            self.structure.ftab.lcpu.size = lcpu.size;
+            self.structure.ftab.lcpu.size = 0x200_000;
+            // self.structure.ftab.lcpu.size = lcpu.size;
 
             self.structure.ftab.lcpu2.base = lcpu.start_addr;
             self.structure.ftab.lcpu2.xip_base = lcpu.start_addr;
-            self.structure.ftab.lcpu2.size = lcpu.size;
+            self.structure.ftab.lcpu2.size = 0x200_000;
+            // self.structure.ftab.lcpu2.size = lcpu.size;
             true
         } else {
             false
@@ -67,11 +74,13 @@ impl Ftab {
 
         self.structure.ftab.bcpu.base = table.bootloader_info.start_addr;
         self.structure.ftab.bcpu.xip_base = table.bootloader_info.start_addr;
-        self.structure.ftab.bcpu.size = table.bootloader_info.size;
+        self.structure.ftab.bcpu.size = 0x80_000;
+        // self.structure.ftab.bcpu.size = table.bootloader_info.size;
 
         self.structure.ftab.bcpu2.base = table.bootloader_info.start_addr;
         self.structure.ftab.bcpu2.xip_base = table.bootloader_info.start_addr;
-        self.structure.ftab.bcpu2.size = table.bootloader_info.size;
+        self.structure.ftab.bcpu2.size = 0x80_000;
+        // self.structure.ftab.bcpu2.size = table.bootloader_info.size;
 
         if used_hcpu {
             self.structure.imgs.hcpu.length = 200000;
@@ -107,20 +116,27 @@ impl Ftab {
         self.structure.imgs.single.length = 0xFFFFFFFF;
 
         self.structure.running_imgs.hcpu = if used_hcpu {
-            std::ptr::addr_of!(self.structure.imgs.hcpu)
+            (offset_of!(structure::SecConfiguration, imgs)
+                + offset_of!(structure::Imgs, hcpu)) as u32
+                + table.flash_table_info.start_addr
         }
         else {
-            0xFFFFFFFF as *const structure::ImageHeaderEnc
+            0xFFFFFFFF
         };
 
         self.structure.running_imgs.lcpu = if used_lcpu {
-            std::ptr::addr_of!(self.structure.imgs.lcpu)
+            (offset_of!(structure::SecConfiguration, imgs)
+            + offset_of!(structure::Imgs, lcpu)) as u32
+            + table.flash_table_info.start_addr
         }
         else {
-            0xFFFFFFFF as *const structure::ImageHeaderEnc
+            0xFFFFFFFF
         };
         
-        self.structure.running_imgs.bl = std::ptr::addr_of!(self.structure.imgs.bcpu);
+        self.structure.running_imgs.bl = (offset_of!(structure::SecConfiguration, imgs)
+            + offset_of!(structure::Imgs, bcpu)) as u32
+            + table.flash_table_info.start_addr
+        
     }
 
 

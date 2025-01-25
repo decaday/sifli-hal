@@ -92,10 +92,11 @@ pub(crate) struct Imgs {
 
 #[repr(C)]
 pub(crate) struct RunningImgs {
-    pub(crate) lcpu: *const ImageHeaderEnc,
-    pub(crate) bl: *const ImageHeaderEnc,
-    pub(crate) hcpu: *const ImageHeaderEnc,
-    pub(crate) boot: *const ImageHeaderEnc,
+    // *const ImageHeaderEnc
+    pub(crate) lcpu: u32,
+    pub(crate) bl: u32,
+    pub(crate) hcpu: u32,
+    pub(crate) boot: u32,
 }
 
 #[repr(C)]
@@ -124,10 +125,10 @@ impl Default for FlashTable {
 impl Default for RunningImgs {
     fn default() -> Self {
         RunningImgs {
-            lcpu: std::ptr::null(),
-            bl: std::ptr::null(),
-            hcpu: std::ptr::null(),
-            boot: std::ptr::null(),
+            lcpu: 0xFFFF_FFFF,
+            bl: 0xFFFF_FFFF,
+            hcpu: 0xFFFF_FFFF,
+            boot: 0xFFFF_FFFF,
         }
     }
 }
@@ -174,7 +175,7 @@ mod tests {
         );
 
         assert_eq!(
-            offset_of!(SecConfiguration, reserved),
+            offset_of!(SecConfiguration, imgs),
             4096
         );
 
@@ -182,12 +183,17 @@ mod tests {
 
         assert_eq!(
             size_of::<Imgs>(),
-            512 * DFU_FLASH_PARTITION - 2
+            512 * ( DFU_FLASH_PARTITION - 2)
         );
 
         assert_eq!(
             size_of::<RunningImgs>(),
             CORE_MAX * 4
         );
+
+        assert_eq!(
+            size_of::<SecConfiguration>(),
+            0x2c10
+        )
     }
 }
