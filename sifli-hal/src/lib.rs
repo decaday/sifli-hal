@@ -49,6 +49,7 @@ pub mod config {
 ///
 /// This should only be called once at startup, otherwise it panics.
 pub fn init(_config: config::Config) -> Peripherals {
+    system_init();
     // Do this first, so that it panics if user is calling `init` a second time
     // before doing anything important.
     let peripherals = Peripherals::take();
@@ -62,6 +63,21 @@ pub fn init(_config: config::Config) -> Peripherals {
     // }
 
     peripherals
+}
+
+fn system_init() {
+    unsafe {
+        let mut cp = cortex_m::Peripherals::steal();  
+
+        // enable CP0/CP1/CP2 Full Access
+        cp.SCB.cpacr.modify(|r| {
+            r | (0b111111)
+        });
+
+        // Enable Cache
+        cp.SCB.enable_icache();
+        cp.SCB.enable_dcache(&mut cp.CPUID);
+    }
 }
 
 /// Macro to bind interrupts to handlers.
