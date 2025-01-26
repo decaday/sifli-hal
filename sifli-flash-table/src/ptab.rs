@@ -5,14 +5,11 @@ use anyhow::Result;
 use anyhow::anyhow;
 
 const FLASH_CAL_SIZE: u32 = 8*1024;
-const BOOTLOADER_PATCH_RAM_BASE: u32 = 0x20010000;
-const BOOTLOADER_PATCH_FLASH_BASE: u32 = 0x20010000;
-const BOOTLOADER_PATCH_SIZE: u32 = 64*1024;
 
 
 /// Represents the entire partition table structure
 #[derive(Debug, Serialize, Deserialize, PartialEq)]
-pub(crate) struct PartitionTable {
+pub struct PartitionTable {
     /// Memory type (e.g., "flash2", "psram1")
     pub(crate) mem: String,
     
@@ -60,20 +57,19 @@ pub(crate) struct FlashTableInfo {
 }
 
 #[derive(Debug, Clone)]
-pub(crate) struct Info {
-    pub(crate) start_addr: u32,
-    pub(crate) size: u32, 
+pub struct Info {
+    pub start_addr: u32,
+    pub size: u32, 
 }
 
 pub struct Ptab {
-    pub(crate) partition_table: Vec<PartitionTable>,
-    pub(crate) flash_table_info: Info,
-    pub(crate) bootloader_info: Info,
-    pub(crate) hcpu_code_info: Option<Info>,
-    pub(crate) lcpu_code_info: Option<Info>,
-    pub(crate) flash_cal_info: Info,
-    pub(crate) bootloader_patch_ram_info: Info,
-    pub(crate) bootloader_patch_flash_info: Info,
+    pub partition_table: Vec<PartitionTable>,
+    pub flash_table_info: Info,
+    pub hcpu_code_info: Option<Info>,
+    pub lcpu_code_info: Option<Info>,
+    pub flash_cal_info: Info,
+    pub bootloader_patch_ram_info: Info,
+    pub bootloader_patch_flash_info: Info,
 }
 
 impl Ptab {
@@ -81,27 +77,19 @@ impl Ptab {
         let partition_table: Vec<PartitionTable> = serde_json::from_str(contents)?; 
         
         let flash_table_info = find_by_tag(&partition_table, "FLASH_TABLE", "flash")?.unwrap();
-        let bootloader_info= find_by_tag(&partition_table, "FLASH_BOOT_LOADER", "flash")?.unwrap();
         let hcpu_code_info = find_by_tag(&partition_table, "HCPU_FLASH_CODE", "flash")?;
         let lcpu_code_info = find_by_tag(&partition_table, "LCPU_FLASH_CODE", "flash")?;
         let flash_cal_info = Info {
             start_addr: flash_table_info.start_addr + flash_table_info.size,
             size: FLASH_CAL_SIZE,
         };
-        let bootloader_patch_ram_info = Info {
-            start_addr: BOOTLOADER_PATCH_RAM_BASE,
-            size: BOOTLOADER_PATCH_SIZE,
-        };
 
-        let bootloader_patch_flash_info = Info {
-            start_addr: BOOTLOADER_PATCH_FLASH_BASE,
-            size: BOOTLOADER_PATCH_SIZE,
-        };
+        let bootloader_patch_ram_info = find_by_tag(&partition_table, "FLASH_BOOT_LOADER", "hpsys_ram")?.unwrap();
+        let bootloader_patch_flash_info = find_by_tag(&partition_table, "FLASH_BOOT_LOADER", "flash")?.unwrap();
 
         Ok(Self {
             partition_table,
             flash_table_info,
-            bootloader_info,
             hcpu_code_info,
             lcpu_code_info,
             flash_cal_info,
@@ -155,7 +143,7 @@ mod tests {
     fn test_parse_ptab() {
         // Construct the path to the ptab.json file
         let mut path = std::path::PathBuf::from(env!("CARGO_MANIFEST_DIR"));
-        path.push("test/sf32lb52_1/ptab.json");
+        path.push("test/em-lb525/ptab.json");
         let contents = std::fs::read_to_string(path).unwrap();
         // Parse the partition table
         let result = Ptab::new(&contents);

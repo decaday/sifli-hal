@@ -4,7 +4,7 @@ const DFU_SIG_SIZE: usize = 256;
 const DFU_FLASH_PARTITION: usize = 16;
 const DFU_VERSION_LEN: usize = 8;
 
-const MAGIC: u32 = 0x53454346; // "SFEC"
+const MAGIC: u32 = 0x53454346;
 #[cfg(test)]
 const CORE_MAX: usize = 4;
 
