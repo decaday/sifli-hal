@@ -22,6 +22,10 @@ pub(crate) struct SecConfiguration {
     pub(crate) running_imgs: RunningImgs,
 }
 
+// Accroding to:
+// https://docs.sifli.com/projects/sdk/v2.3/sf32lb52x/bootloader.html (2025/1/27)
+// https://github.com/OpenSiFli/SiFli-SDK/issues/10#issuecomment-2614345184
+// https://github.com/OpenSiFli/SiFli-SDK/blob/8f42a6916c55c6b44ec45e1c0d137b15f7fa7fa3/middleware/dfu/dfu.h#L86-L96
 #[repr(C)]
 #[derive(Default)]
 pub(crate) struct FlashTables {
@@ -30,19 +34,19 @@ pub(crate) struct FlashTables {
     /// LCPU-Ping
     pub(crate) lcpu: FlashTable,
     /// BCPU-Ping
-    pub(crate) bcpu: FlashTable,
+    pub(crate) secondary_bootloader: FlashTable,
     /// HCPU-Ping
     pub(crate) hcpu: FlashTable,
     /// Flash Boot Patch
-    pub(crate) boot: FlashTable,
+    pub(crate) primary_bl_patch: FlashTable,
     /// LCPU Pong
     pub(crate) lcpu2: FlashTable,
     /// BCPU Pong
-    pub(crate) bcpu2: FlashTable,
+    pub(crate) secondary_bootloader2: FlashTable,
     /// HCPU Pong
     pub(crate) hcpu2: FlashTable,
     /// Ram Boot Patch
-    pub(crate) boot2: FlashTable,
+    pub(crate) primary_bl_patch2: FlashTable,
     pub(crate) hcpu_ext1: FlashTable,
     pub(crate) hcpu_ext2: FlashTable,
     pub(crate) lcpu_ext1: FlashTable,
@@ -67,19 +71,19 @@ pub(crate) struct Imgs {
     /// LCPU-Ping
     pub(crate) lcpu: ImageHeaderEnc,
     /// BCPU-Ping
-    pub(crate) bcpu: ImageHeaderEnc,
+    pub(crate) secondary_bootloader: ImageHeaderEnc,
     /// HCPU-Ping
     pub(crate) hcpu: ImageHeaderEnc,
     /// Flash Boot Patch
-    pub(crate) boot: ImageHeaderEnc,
+    pub(crate) primary_bl_patch: ImageHeaderEnc,
     /// LCPU Pong
     pub(crate) lcpu2: ImageHeaderEnc,
     /// BCPU Pong
-    pub(crate) bcpu2: ImageHeaderEnc,
+    pub(crate) secondary_bootloader2: ImageHeaderEnc,
     /// HCPU Pong
     pub(crate) hcpu2: ImageHeaderEnc,
     /// Ram Boot Patch
-    pub(crate) boot2: ImageHeaderEnc,
+    pub(crate) primary_bl_patch2: ImageHeaderEnc,
     pub(crate) hcpu_ext1: ImageHeaderEnc,
     pub(crate) hcpu_ext2: ImageHeaderEnc,
     pub(crate) lcpu_ext1: ImageHeaderEnc,
@@ -90,13 +94,14 @@ pub(crate) struct Imgs {
     
 }
 
+// accroding to https://github.com/OpenSiFli/SiFli-SDK/issues/10#issuecomment-2614345184
 #[repr(C)]
 pub(crate) struct RunningImgs {
     // *const ImageHeaderEnc
     pub(crate) lcpu: u32,
-    pub(crate) bl: u32,
+    pub(crate) secondary_bl: u32,
     pub(crate) hcpu: u32,
-    pub(crate) boot: u32,
+    pub(crate) primary_bl_patch: u32,
 }
 
 #[repr(C)]
@@ -126,9 +131,9 @@ impl Default for RunningImgs {
     fn default() -> Self {
         RunningImgs {
             lcpu: 0xFFFF_FFFF,
-            bl: 0xFFFF_FFFF,
+            secondary_bl: 0xFFFF_FFFF,
             hcpu: 0xFFFF_FFFF,
-            boot: 0xFFFF_FFFF,
+            primary_bl_patch: 0xFFFF_FFFF,
         }
     }
 }
