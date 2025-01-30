@@ -1,0 +1,1260 @@
+block/HPSYS_RCC:
+  items:
+  - name: RSTR1
+    description: Reset Register 1
+    byte_offset: 0
+    fieldset: RSTR1
+  - name: RSTR2
+    description: Reset Register 2
+    byte_offset: 4
+    fieldset: RSTR2
+  - name: ENR1
+    description: Enable Register 1
+    byte_offset: 8
+    fieldset: ENR1
+  - name: ENR2
+    description: Enable Register 2
+    byte_offset: 12
+    fieldset: ENR2
+  - name: ESR1
+    description: Enable Set Register 1
+    byte_offset: 16
+    fieldset: ESR1
+  - name: ESR2
+    description: Enable Set Register 2
+    byte_offset: 20
+    fieldset: ESR2
+  - name: ECR1
+    description: Enable Clear Register 1
+    byte_offset: 24
+    fieldset: ECR1
+  - name: ECR2
+    description: Enable Clear Register 2
+    byte_offset: 28
+    fieldset: ECR2
+  - name: CSR
+    description: Clock Select Register
+    byte_offset: 32
+    fieldset: CSR
+  - name: CFGR
+    description: Clock Configuration Register
+    byte_offset: 36
+    fieldset: CFGR
+  - name: USBCR
+    description: USBC Control Register
+    byte_offset: 40
+    fieldset: USBCR
+  - name: DLL1CR
+    description: DLL1 Control Register
+    byte_offset: 44
+    fieldset: DLL1CR
+  - name: DLL2CR
+    description: DLL2 Control Register
+    byte_offset: 48
+    fieldset: DLL2CR
+  - name: HRCCAL1
+    description: HRC Calibration Register 1
+    byte_offset: 52
+    fieldset: HRCCAL1
+  - name: HRCCAL2
+    description: HRC Calibration Register 2
+    byte_offset: 56
+    fieldset: HRCCAL2
+  - name: DBGCLKR
+    description: Debug Clock Register
+    byte_offset: 60
+    fieldset: DBGCLKR
+  - name: DBGR
+    description: Debug Register
+    byte_offset: 64
+    fieldset: DBGR
+  - name: DWCFGR
+    description: Deep WFI mode Clock Configuration Register
+    byte_offset: 68
+    fieldset: DWCFGR
+fieldset/CFGR:
+  description: Clock Configuration Register
+  fields:
+  - name: HDIV
+    description: hclk_hpsys = clk_hpsys / HDIV if HDIV=0, hclk_hpsys = clk_hpsys
+    bit_offset: 0
+    bit_size: 8
+  - name: PDIV1
+    description: pclk_hpsys = hclk_hpsys / (2^PDIV1), by default divided by 2
+    bit_offset: 8
+    bit_size: 3
+  - name: RSVD3
+    bit_offset: 11
+    bit_size: 1
+  - name: PDIV2
+    description: pclk2_hpsys = hclk_hpsys / (2^PDIV2), by default divided by 16
+    bit_offset: 12
+    bit_size: 3
+  - name: RSVD2
+    bit_offset: 15
+    bit_size: 1
+  - name: TICKDIV
+    description: systick reference clock is systick reference clock source (selected by SEL_TICK) devided by TICKDIV
+    bit_offset: 16
+    bit_size: 6
+  - name: RSVD
+    bit_offset: 22
+    bit_size: 10
+fieldset/CSR:
+  description: Clock Select Register
+  fields:
+  - name: SEL_SYS
+    description: select clk_hpsys source 0 - clk_hrc48; 1 - clk_hxt48; 2 - reserved; 3 - clk_dll1
+    bit_offset: 0
+    bit_size: 2
+  - name: SEL_SYS_LP
+    description: select clk_hpsys source 0 - selected by SEL_SYS; 1 - clk_wdt
+    bit_offset: 2
+    bit_size: 1
+  - name: RSVD4
+    bit_offset: 3
+    bit_size: 1
+  - name: SEL_MPI1
+    description: selet MPI1 function clock 0 - clk_peri_hpsys; 1 - clk_dll1; 2 - clk_dll2; 3 - reserved
+    bit_offset: 4
+    bit_size: 2
+  - name: SEL_MPI2
+    description: selet MPI2 function clock 0 - clk_peri_hpsys; 1 - clk_dll1; 2 - clk_dll2; 3 - reserved
+    bit_offset: 6
+    bit_size: 2
+  - name: RSVD3
+    bit_offset: 8
+    bit_size: 2
+  - name: RSVD2
+    bit_offset: 10
+    bit_size: 2
+  - name: SEL_PERI
+    description: select clk_peri_hpsys source used by USART/SPI/I2C/GPTIM2/BTIM2 0 - clk_hrc48; 1 - clk_hxt48
+    bit_offset: 12
+    bit_size: 1
+  - name: SEL_TICK
+    description: select clock source for systick reference 0 - clk_rtc; 1 - reserved; 2 - clk_hrc48; 3 - clk_hxt48
+    bit_offset: 13
+    bit_size: 2
+  - name: SEL_USBC
+    description: select USB source clock 0 - clk_hpsys; 1 - clk_dll2
+    bit_offset: 15
+    bit_size: 1
+  - name: RSVD
+    bit_offset: 16
+    bit_size: 16
+fieldset/DBGCLKR:
+  description: Debug Clock Register
+  fields:
+  - name: CLK_SEL
+    description: for debug only
+    bit_offset: 0
+    bit_size: 2
+  - name: CLK_EN
+    description: for debug only
+    bit_offset: 2
+    bit_size: 1
+  - name: RSVD2
+    bit_offset: 3
+    bit_size: 1
+  - name: DLL1_DBG
+    description: for debug only
+    bit_offset: 4
+    bit_size: 1
+  - name: DLL1_LDO_EN
+    description: for debug only
+    bit_offset: 5
+    bit_size: 1
+  - name: DLL1_OUT_EN
+    description: for debug only
+    bit_offset: 6
+    bit_size: 1
+  - name: DLL1_LOOP_EN
+    description: for debug only
+    bit_offset: 7
+    bit_size: 1
+  - name: DLL1_OUT_RSTB
+    description: for debug only
+    bit_offset: 8
+    bit_size: 1
+  - name: DLL1_CG_EN
+    description: for debug only
+    bit_offset: 9
+    bit_size: 1
+  - name: DLL1_OUT_STR
+    description: for debug only
+    bit_offset: 10
+    bit_size: 2
+  - name: DLL2_DBG
+    description: for debug only
+    bit_offset: 12
+    bit_size: 1
+  - name: DLL2_LDO_EN
+    description: for debug only
+    bit_offset: 13
+    bit_size: 1
+  - name: DLL2_OUT_EN
+    description: for debug only
+    bit_offset: 14
+    bit_size: 1
+  - name: DLL2_LOOP_EN
+    description: for debug only
+    bit_offset: 15
+    bit_size: 1
+  - name: DLL2_OUT_RSTB
+    description: for debug only
+    bit_offset: 16
+    bit_size: 1
+  - name: DLL2_CG_EN
+    description: for debug only
+    bit_offset: 17
+    bit_size: 1
+  - name: DLL2_OUT_STR
+    description: for debug only
+    bit_offset: 18
+    bit_size: 2
+  - name: RSVD
+    bit_offset: 20
+    bit_size: 12
+fieldset/DBGR:
+  description: Debug Register
+  fields:
+  - name: SYSCLK_AON
+    description: for debug only
+    bit_offset: 0
+    bit_size: 1
+  - name: SYSCLK_SWLP
+    description: for debug only
+    bit_offset: 1
+    bit_size: 1
+  - name: FORCE_BUS
+    description: for debug only
+    bit_offset: 2
+    bit_size: 1
+  - name: FORCE_GPIO
+    description: for debug only
+    bit_offset: 3
+    bit_size: 1
+  - name: FORCE_HP
+    description: for debug only
+    bit_offset: 4
+    bit_size: 1
+  - name: RSVD
+    bit_offset: 5
+    bit_size: 27
+fieldset/DLL1CR:
+  description: DLL1 Control Register
+  fields:
+  - name: EN
+    description: '0: dll disabled 1: dll enabled'
+    bit_offset: 0
+    bit_size: 1
+  - name: SW
+    bit_offset: 1
+    bit_size: 1
+  - name: STG
+    description: DLL lock freqency is decided by STG. DLL output frequency is (STG+1)*24MHz e.g. STG=9,DLL output is 240M
+    bit_offset: 2
+    bit_size: 4
+  - name: XTALIN_EN
+    bit_offset: 6
+    bit_size: 1
+  - name: MODE48M_EN
+    bit_offset: 7
+    bit_size: 1
+  - name: LDO_VREF
+    bit_offset: 8
+    bit_size: 4
+  - name: IN_DIV2_EN
+    bit_offset: 12
+    bit_size: 1
+  - name: OUT_DIV2_EN
+    description: '0: dll output not divided 1: dll output divided by 2'
+    bit_offset: 13
+    bit_size: 1
+  - name: MCU_PRCHG_EN
+    bit_offset: 14
+    bit_size: 1
+  - name: MCU_PRCHG
+    bit_offset: 15
+    bit_size: 1
+  - name: PRCHG_EN
+    bit_offset: 16
+    bit_size: 1
+  - name: PRCHG_EXT
+    bit_offset: 17
+    bit_size: 1
+  - name: VST_SEL
+    bit_offset: 18
+    bit_size: 1
+  - name: BYPASS
+    bit_offset: 19
+    bit_size: 1
+  - name: DTEST_EN
+    bit_offset: 20
+    bit_size: 1
+  - name: DTEST_TR
+    bit_offset: 21
+    bit_size: 4
+  - name: PU_DLY
+    bit_offset: 25
+    bit_size: 3
+  - name: LOCK_DLY
+    bit_offset: 28
+    bit_size: 3
+  - name: READY
+    description: '0: dll not ready 1: dll ready'
+    bit_offset: 31
+    bit_size: 1
+fieldset/DLL2CR:
+  description: DLL2 Control Register
+  fields:
+  - name: EN
+    description: '0: dll disabled 1: dll enabled'
+    bit_offset: 0
+    bit_size: 1
+  - name: SW
+    bit_offset: 1
+    bit_size: 1
+  - name: STG
+    description: DLL lock freqency is decided by STG. DLL output frequency is (STG+1)*24MHz e.g. STG=9,DLL output is 240M
+    bit_offset: 2
+    bit_size: 4
+  - name: XTALIN_EN
+    bit_offset: 6
+    bit_size: 1
+  - name: MODE48M_EN
+    bit_offset: 7
+    bit_size: 1
+  - name: LDO_VREF
+    bit_offset: 8
+    bit_size: 4
+  - name: IN_DIV2_EN
+    bit_offset: 12
+    bit_size: 1
+  - name: OUT_DIV2_EN
+    description: '0: dll output not divided 1: dll output divided by 2'
+    bit_offset: 13
+    bit_size: 1
+  - name: MCU_PRCHG_EN
+    bit_offset: 14
+    bit_size: 1
+  - name: MCU_PRCHG
+    bit_offset: 15
+    bit_size: 1
+  - name: PRCHG_EN
+    bit_offset: 16
+    bit_size: 1
+  - name: PRCHG_EXT
+    bit_offset: 17
+    bit_size: 1
+  - name: VST_SEL
+    bit_offset: 18
+    bit_size: 1
+  - name: BYPASS
+    bit_offset: 19
+    bit_size: 1
+  - name: DTEST_EN
+    bit_offset: 20
+    bit_size: 1
+  - name: DTEST_TR
+    bit_offset: 21
+    bit_size: 4
+  - name: PU_DLY
+    bit_offset: 25
+    bit_size: 3
+  - name: LOCK_DLY
+    bit_offset: 28
+    bit_size: 3
+  - name: READY
+    description: '0: dll not ready 1: dll ready'
+    bit_offset: 31
+    bit_size: 1
+fieldset/DWCFGR:
+  description: Deep WFI mode Clock Configuration Register
+  fields:
+  - name: HDIV
+    description: hclk_hpsys = clk_hpsys / HDIV during deep wfi
+    bit_offset: 0
+    bit_size: 8
+  - name: PDIV1
+    description: pclk_hpsys = hclk_hpsys / (2^PDIV1) during deep wfi
+    bit_offset: 8
+    bit_size: 3
+  - name: RSVD3
+    bit_offset: 11
+    bit_size: 1
+  - name: PDIV2
+    description: pclk2_hpsys = hclk_hpsys / (2^PDIV2) during deep wfi
+    bit_offset: 12
+    bit_size: 3
+  - name: DIV_EN
+    description: enable PDIV1, PDIV2 and HDIV reconfiguration during deep wfi
+    bit_offset: 15
+    bit_size: 1
+  - name: SEL_SYS
+    description: select clk_hpsys source during deep WFI 0 - clk_hrc48; 1 - clk_hxt48; 2 - RSVD; 3 - clk_dll1
+    bit_offset: 16
+    bit_size: 2
+  - name: SEL_SYS_LP
+    description: select clk_hpsys source during deep WFI 0 - selected by SEL_SYS; 1 - clk_wdt
+    bit_offset: 18
+    bit_size: 1
+  - name: RSVD2
+    bit_offset: 19
+    bit_size: 5
+  - name: DLL1_OUT_EN
+    description: for debug only
+    bit_offset: 24
+    bit_size: 1
+  - name: DLL1_OUT_RSTB
+    description: for debug only
+    bit_offset: 25
+    bit_size: 1
+  - name: DLL2_OUT_EN
+    description: for debug only
+    bit_offset: 26
+    bit_size: 1
+  - name: DLL2_OUT_RSTB
+    description: for debug only
+    bit_offset: 27
+    bit_size: 1
+  - name: RSVD
+    bit_offset: 28
+    bit_size: 4
+fieldset/ECR1:
+  description: Enable Clear Register 1
+  fields:
+  - name: DMAC1
+    description: write 1 to clear module enable, write 0 has no effect
+    bit_offset: 0
+    bit_size: 1
+  - name: MAILBOX1
+    description: write 1 to clear module enable, write 0 has no effect
+    bit_offset: 1
+    bit_size: 1
+  - name: PINMUX1
+    description: write 1 to clear module enable, write 0 has no effect
+    bit_offset: 2
+    bit_size: 1
+  - name: RSVD6
+    bit_offset: 3
+    bit_size: 1
+  - name: USART2
+    description: write 1 to clear module enable, write 0 has no effect
+    bit_offset: 4
+    bit_size: 1
+  - name: EZIP1
+    description: write 1 to clear module enable, write 0 has no effect
+    bit_offset: 5
+    bit_size: 1
+  - name: EPIC
+    description: write 1 to clear module enable, write 0 has no effect
+    bit_offset: 6
+    bit_size: 1
+  - name: LCDC1
+    description: write 1 to clear module enable, write 0 has no effect
+    bit_offset: 7
+    bit_size: 1
+  - name: I2S1
+    description: write 1 to clear module enable, write 0 has no effect
+    bit_offset: 8
+    bit_size: 1
+  - name: RSVD5
+    bit_offset: 9
+    bit_size: 1
+  - name: SYSCFG1
+    description: write 1 to clear module enable, write 0 has no effect
+    bit_offset: 10
+    bit_size: 1
+  - name: EFUSEC
+    description: write 1 to clear module enable, write 0 has no effect
+    bit_offset: 11
+    bit_size: 1
+  - name: AES
+    description: write 1 to clear module enable, write 0 has no effect
+    bit_offset: 12
+    bit_size: 1
+  - name: CRC1
+    description: write 1 to clear module enable, write 0 has no effect
+    bit_offset: 13
+    bit_size: 1
+  - name: TRNG
+    description: write 1 to clear module enable, write 0 has no effect
+    bit_offset: 14
+    bit_size: 1
+  - name: GPTIM1
+    description: write 1 to clear module enable, write 0 has no effect
+    bit_offset: 15
+    bit_size: 1
+  - name: GPTIM2
+    description: write 1 to clear module enable, write 0 has no effect
+    bit_offset: 16
+    bit_size: 1
+  - name: BTIM1
+    description: write 1 to clear module enable, write 0 has no effect
+    bit_offset: 17
+    bit_size: 1
+  - name: BTIM2
+    description: write 1 to clear module enable, write 0 has no effect
+    bit_offset: 18
+    bit_size: 1
+  - name: RSVD4
+    bit_offset: 19
+    bit_size: 1
+  - name: SPI1
+    description: write 1 to clear module enable, write 0 has no effect
+    bit_offset: 20
+    bit_size: 1
+  - name: SPI2
+    description: write 1 to clear module enable, write 0 has no effect
+    bit_offset: 21
+    bit_size: 1
+  - name: EXTDMA
+    description: write 1 to clear module enable, write 0 has no effect
+    bit_offset: 22
+    bit_size: 1
+  - name: SECU1
+    description: write 1 to clear module enable, write 0 has no effect
+    bit_offset: 23
+    bit_size: 1
+  - name: RSVD3
+    bit_offset: 24
+    bit_size: 1
+  - name: PDM1
+    description: write 1 to clear module enable, write 0 has no effect
+    bit_offset: 25
+    bit_size: 1
+  - name: RSVD2
+    bit_offset: 26
+    bit_size: 1
+  - name: I2C1
+    description: write 1 to clear module enable, write 0 has no effect
+    bit_offset: 27
+    bit_size: 1
+  - name: I2C2
+    description: write 1 to clear module enable, write 0 has no effect
+    bit_offset: 28
+    bit_size: 1
+  - name: RSVD
+    bit_offset: 29
+    bit_size: 2
+  - name: PTC1
+    description: write 1 to clear module enable, write 0 has no effect
+    bit_offset: 31
+    bit_size: 1
+fieldset/ECR2:
+  description: Enable Clear Register 2
+  fields:
+  - name: GPIO1
+    description: write 1 to clear module enable, write 0 has no effect
+    bit_offset: 0
+    bit_size: 1
+  - name: MPI1
+    description: write 1 to clear module enable, write 0 has no effect
+    bit_offset: 1
+    bit_size: 1
+  - name: MPI2
+    description: write 1 to clear module enable, write 0 has no effect
+    bit_offset: 2
+    bit_size: 1
+  - name: RSVD8
+    bit_offset: 3
+    bit_size: 1
+  - name: SDMMC1
+    description: write 1 to clear module enable, write 0 has no effect
+    bit_offset: 4
+    bit_size: 1
+  - name: RSVD7
+    bit_offset: 5
+    bit_size: 1
+  - name: USBC
+    description: write 1 to clear module enable, write 0 has no effect
+    bit_offset: 6
+    bit_size: 1
+  - name: RSVD6
+    bit_offset: 7
+    bit_size: 1
+  - name: I2C3
+    description: write 1 to clear module enable, write 0 has no effect
+    bit_offset: 8
+    bit_size: 1
+  - name: ATIM1
+    description: write 1 to clear module enable, write 0 has no effect
+    bit_offset: 9
+    bit_size: 1
+  - name: RSVD5
+    bit_offset: 10
+    bit_size: 2
+  - name: USART3
+    description: write 1 to clear module enable, write 0 has no effect
+    bit_offset: 12
+    bit_size: 1
+  - name: RSVD4
+    bit_offset: 13
+    bit_size: 6
+  - name: AUDCODEC
+    description: write 1 to clear module enable, write 0 has no effect
+    bit_offset: 19
+    bit_size: 1
+  - name: AUDPRC
+    description: write 1 to clear module enable, write 0 has no effect
+    bit_offset: 20
+    bit_size: 1
+  - name: RSVD3
+    bit_offset: 21
+    bit_size: 1
+  - name: GPADC
+    description: write 1 to clear module enable, write 0 has no effect
+    bit_offset: 22
+    bit_size: 1
+  - name: TSEN
+    description: write 1 to clear module enable, write 0 has no effect
+    bit_offset: 23
+    bit_size: 1
+  - name: RSVD2
+    bit_offset: 24
+    bit_size: 1
+  - name: I2C4
+    description: write 1 to clear module enable, write 0 has no effect
+    bit_offset: 25
+    bit_size: 1
+  - name: RSVD
+    bit_offset: 26
+    bit_size: 6
+fieldset/ENR1:
+  description: Enable Register 1
+  fields:
+  - name: DMAC1
+    description: write 1 to set module enable, write 0 to disable module
+    bit_offset: 0
+    bit_size: 1
+  - name: MAILBOX1
+    description: write 1 to set module enable, write 0 to disable module
+    bit_offset: 1
+    bit_size: 1
+  - name: PINMUX1
+    description: write 1 to set module enable, write 0 to disable module
+    bit_offset: 2
+    bit_size: 1
+  - name: USART1
+    bit_offset: 3
+    bit_size: 1
+  - name: USART2
+    description: write 1 to set module enable, write 0 to disable module
+    bit_offset: 4
+    bit_size: 1
+  - name: EZIP1
+    description: write 1 to set module enable, write 0 to disable module
+    bit_offset: 5
+    bit_size: 1
+  - name: EPIC
+    description: write 1 to set module enable, write 0 to disable module
+    bit_offset: 6
+    bit_size: 1
+  - name: LCDC1
+    description: write 1 to set module enable, write 0 to disable module
+    bit_offset: 7
+    bit_size: 1
+  - name: I2S1
+    description: write 1 to set module enable, write 0 to disable module
+    bit_offset: 8
+    bit_size: 1
+  - name: RSVD5
+    bit_offset: 9
+    bit_size: 1
+  - name: SYSCFG1
+    description: write 1 to set module enable, write 0 to disable module
+    bit_offset: 10
+    bit_size: 1
+  - name: EFUSEC
+    description: write 1 to set module enable, write 0 to disable module
+    bit_offset: 11
+    bit_size: 1
+  - name: AES
+    description: write 1 to set module enable, write 0 to disable module
+    bit_offset: 12
+    bit_size: 1
+  - name: CRC1
+    description: write 1 to set module enable, write 0 to disable module
+    bit_offset: 13
+    bit_size: 1
+  - name: TRNG
+    description: write 1 to set module enable, write 0 to disable module
+    bit_offset: 14
+    bit_size: 1
+  - name: GPTIM1
+    description: write 1 to set module enable, write 0 to disable module
+    bit_offset: 15
+    bit_size: 1
+  - name: GPTIM2
+    description: write 1 to set module enable, write 0 to disable module
+    bit_offset: 16
+    bit_size: 1
+  - name: BTIM1
+    description: write 1 to set module enable, write 0 to disable module
+    bit_offset: 17
+    bit_size: 1
+  - name: BTIM2
+    description: write 1 to set module enable, write 0 to disable module
+    bit_offset: 18
+    bit_size: 1
+  - name: WDT1
+    bit_offset: 19
+    bit_size: 1
+  - name: SPI1
+    description: write 1 to set module enable, write 0 to disable module
+    bit_offset: 20
+    bit_size: 1
+  - name: SPI2
+    description: write 1 to set module enable, write 0 to disable module
+    bit_offset: 21
+    bit_size: 1
+  - name: EXTDMA
+    description: write 1 to set module enable, write 0 to disable module
+    bit_offset: 22
+    bit_size: 1
+  - name: SECU1
+    description: write 1 to set module enable, write 0 to disable module
+    bit_offset: 23
+    bit_size: 1
+  - name: RSVD3
+    bit_offset: 24
+    bit_size: 1
+  - name: PDM1
+    description: write 1 to set module enable, write 0 to disable module
+    bit_offset: 25
+    bit_size: 1
+  - name: RSVD2
+    bit_offset: 26
+    bit_size: 1
+  - name: I2C1
+    description: write 1 to set module enable, write 0 to disable module
+    bit_offset: 27
+    bit_size: 1
+  - name: I2C2
+    description: write 1 to set module enable, write 0 to disable module
+    bit_offset: 28
+    bit_size: 1
+  - name: RSVD
+    bit_offset: 29
+    bit_size: 2
+  - name: PTC1
+    description: write 1 to set module enable, write 0 to disable module
+    bit_offset: 31
+    bit_size: 1
+fieldset/ENR2:
+  description: Enable Register 2
+  fields:
+  - name: GPIO1
+    description: write 1 to set module enable, write 0 to disable module
+    bit_offset: 0
+    bit_size: 1
+  - name: MPI1
+    description: write 1 to set module enable, write 0 to disable module
+    bit_offset: 1
+    bit_size: 1
+  - name: MPI2
+    description: write 1 to set module enable, write 0 to disable module
+    bit_offset: 2
+    bit_size: 1
+  - name: RSVD8
+    bit_offset: 3
+    bit_size: 1
+  - name: SDMMC1
+    description: write 1 to set module enable, write 0 to disable module
+    bit_offset: 4
+    bit_size: 1
+  - name: RSVD7
+    bit_offset: 5
+    bit_size: 1
+  - name: USBC
+    description: write 1 to set module enable, write 0 to disable module
+    bit_offset: 6
+    bit_size: 1
+  - name: RSVD6
+    bit_offset: 7
+    bit_size: 1
+  - name: I2C3
+    description: write 1 to set module enable, write 0 to disable module
+    bit_offset: 8
+    bit_size: 1
+  - name: ATIM1
+    description: write 1 to set module enable, write 0 to disable module
+    bit_offset: 9
+    bit_size: 1
+  - name: RSVD5
+    bit_offset: 10
+    bit_size: 2
+  - name: USART3
+    description: write 1 to set module enable, write 0 to disable module
+    bit_offset: 12
+    bit_size: 1
+  - name: RSVD4
+    bit_offset: 13
+    bit_size: 6
+  - name: AUDCODEC
+    description: write 1 to set module enable, write 0 to disable module
+    bit_offset: 19
+    bit_size: 1
+  - name: AUDPRC
+    description: write 1 to set module enable, write 0 to disable module
+    bit_offset: 20
+    bit_size: 1
+  - name: RSVD3
+    bit_offset: 21
+    bit_size: 1
+  - name: GPADC
+    description: write 1 to set module enable, write 0 to disable module
+    bit_offset: 22
+    bit_size: 1
+  - name: TSEN
+    description: write 1 to set module enable, write 0 to disable module
+    bit_offset: 23
+    bit_size: 1
+  - name: RSVD2
+    bit_offset: 24
+    bit_size: 1
+  - name: I2C4
+    description: write 1 to set module enable, write 0 to disable module
+    bit_offset: 25
+    bit_size: 1
+  - name: RSVD
+    bit_offset: 26
+    bit_size: 6
+fieldset/ESR1:
+  description: Enable Set Register 1
+  fields:
+  - name: DMAC1
+    description: write 1 to set module enable, write 0 has no effect
+    bit_offset: 0
+    bit_size: 1
+  - name: MAILBOX1
+    description: write 1 to set module enable, write 0 has no effect
+    bit_offset: 1
+    bit_size: 1
+  - name: PINMUX1
+    description: write 1 to set module enable, write 0 has no effect
+    bit_offset: 2
+    bit_size: 1
+  - name: RSVD6
+    bit_offset: 3
+    bit_size: 1
+  - name: USART2
+    description: write 1 to set module enable, write 0 has no effect
+    bit_offset: 4
+    bit_size: 1
+  - name: EZIP1
+    description: write 1 to set module enable, write 0 has no effect
+    bit_offset: 5
+    bit_size: 1
+  - name: EPIC
+    description: write 1 to set module enable, write 0 has no effect
+    bit_offset: 6
+    bit_size: 1
+  - name: LCDC1
+    description: write 1 to set module enable, write 0 has no effect
+    bit_offset: 7
+    bit_size: 1
+  - name: I2S1
+    description: write 1 to set module enable, write 0 has no effect
+    bit_offset: 8
+    bit_size: 1
+  - name: RSVD5
+    bit_offset: 9
+    bit_size: 1
+  - name: SYSCFG1
+    description: write 1 to set module enable, write 0 has no effect
+    bit_offset: 10
+    bit_size: 1
+  - name: EFUSEC
+    description: write 1 to set module enable, write 0 has no effect
+    bit_offset: 11
+    bit_size: 1
+  - name: AES
+    description: write 1 to set module enable, write 0 has no effect
+    bit_offset: 12
+    bit_size: 1
+  - name: CRC1
+    description: write 1 to set module enable, write 0 has no effect
+    bit_offset: 13
+    bit_size: 1
+  - name: TRNG
+    description: write 1 to set module enable, write 0 has no effect
+    bit_offset: 14
+    bit_size: 1
+  - name: GPTIM1
+    description: write 1 to set module enable, write 0 has no effect
+    bit_offset: 15
+    bit_size: 1
+  - name: GPTIM2
+    description: write 1 to set module enable, write 0 has no effect
+    bit_offset: 16
+    bit_size: 1
+  - name: BTIM1
+    description: write 1 to set module enable, write 0 has no effect
+    bit_offset: 17
+    bit_size: 1
+  - name: BTIM2
+    description: write 1 to set module enable, write 0 has no effect
+    bit_offset: 18
+    bit_size: 1
+  - name: RSVD4
+    bit_offset: 19
+    bit_size: 1
+  - name: SPI1
+    description: write 1 to set module enable, write 0 has no effect
+    bit_offset: 20
+    bit_size: 1
+  - name: SPI2
+    description: write 1 to set module enable, write 0 has no effect
+    bit_offset: 21
+    bit_size: 1
+  - name: EXTDMA
+    description: write 1 to set module enable, write 0 has no effect
+    bit_offset: 22
+    bit_size: 1
+  - name: SECU1
+    description: write 1 to set module enable, write 0 has no effect
+    bit_offset: 23
+    bit_size: 1
+  - name: RSVD3
+    bit_offset: 24
+    bit_size: 1
+  - name: PDM1
+    description: write 1 to set module enable, write 0 has no effect
+    bit_offset: 25
+    bit_size: 1
+  - name: RSVD2
+    bit_offset: 26
+    bit_size: 1
+  - name: I2C1
+    description: write 1 to set module enable, write 0 has no effect
+    bit_offset: 27
+    bit_size: 1
+  - name: I2C2
+    description: write 1 to set module enable, write 0 has no effect
+    bit_offset: 28
+    bit_size: 1
+  - name: RSVD
+    bit_offset: 29
+    bit_size: 2
+  - name: PTC1
+    description: write 1 to set module enable, write 0 has no effect
+    bit_offset: 31
+    bit_size: 1
+fieldset/ESR2:
+  description: Enable Set Register 2
+  fields:
+  - name: GPIO1
+    description: write 1 to set module enable, write 0 has no effect
+    bit_offset: 0
+    bit_size: 1
+  - name: MPI1
+    description: write 1 to set module enable, write 0 has no effect
+    bit_offset: 1
+    bit_size: 1
+  - name: MPI2
+    description: write 1 to set module enable, write 0 has no effect
+    bit_offset: 2
+    bit_size: 1
+  - name: RSVD8
+    bit_offset: 3
+    bit_size: 1
+  - name: SDMMC1
+    description: write 1 to set module enable, write 0 has no effect
+    bit_offset: 4
+    bit_size: 1
+  - name: RSVD7
+    bit_offset: 5
+    bit_size: 1
+  - name: USBC
+    description: write 1 to set module enable, write 0 has no effect
+    bit_offset: 6
+    bit_size: 1
+  - name: RSVD6
+    bit_offset: 7
+    bit_size: 1
+  - name: I2C3
+    description: write 1 to set module enable, write 0 has no effect
+    bit_offset: 8
+    bit_size: 1
+  - name: ATIM1
+    description: write 1 to set module enable, write 0 has no effect
+    bit_offset: 9
+    bit_size: 1
+  - name: RSVD5
+    bit_offset: 10
+    bit_size: 2
+  - name: USART3
+    description: write 1 to set module enable, write 0 has no effect
+    bit_offset: 12
+    bit_size: 1
+  - name: RSVD4
+    bit_offset: 13
+    bit_size: 6
+  - name: AUDCODEC
+    description: write 1 to set module enable, write 0 has no effect
+    bit_offset: 19
+    bit_size: 1
+  - name: AUDPRC
+    description: write 1 to set module enable, write 0 has no effect
+    bit_offset: 20
+    bit_size: 1
+  - name: RSVD3
+    bit_offset: 21
+    bit_size: 1
+  - name: GPADC
+    description: write 1 to set module enable, write 0 has no effect
+    bit_offset: 22
+    bit_size: 1
+  - name: TSEN
+    description: write 1 to set module enable, write 0 has no effect
+    bit_offset: 23
+    bit_size: 1
+  - name: RSVD2
+    bit_offset: 24
+    bit_size: 1
+  - name: I2C4
+    description: write 1 to set module enable, write 0 has no effect
+    bit_offset: 25
+    bit_size: 1
+  - name: RSVD
+    bit_offset: 26
+    bit_size: 6
+fieldset/HRCCAL1:
+  description: HRC Calibration Register 1
+  fields:
+  - name: CAL_LENGTH
+    description: Target clk_hxt48 cycles during calibration
+    bit_offset: 0
+    bit_size: 16
+  - name: RSVD
+    bit_offset: 16
+    bit_size: 14
+  - name: CAL_EN
+    description: Calibration enble. Set to 0 to clear result, then set to 1 to start a new calibration
+    bit_offset: 30
+    bit_size: 1
+  - name: CAL_DONE
+    description: Calibration done. After a new calibration started, results should be processed only when cal_done asserted.
+    bit_offset: 31
+    bit_size: 1
+fieldset/HRCCAL2:
+  description: HRC Calibration Register 2
+  fields:
+  - name: HRC_CNT
+    description: Total clk_hrc48 cycles during calibration
+    bit_offset: 0
+    bit_size: 16
+  - name: HXT_CNT
+    description: Total clk_hxt48 cycles during calibration
+    bit_offset: 16
+    bit_size: 16
+fieldset/RSTR1:
+  description: Reset Register 1
+  fields:
+  - name: DMAC1
+    description: 0 - no reset; 1 - reset
+    bit_offset: 0
+    bit_size: 1
+  - name: MAILBOX1
+    description: 0 - no reset; 1 - reset
+    bit_offset: 1
+    bit_size: 1
+  - name: PINMUX1
+    description: 0 - no reset; 1 - reset
+    bit_offset: 2
+    bit_size: 1
+  - name: USART1
+    description: 0 - no reset; 1 - reset
+    bit_offset: 3
+    bit_size: 1
+  - name: USART2
+    description: 0 - no reset; 1 - reset
+    bit_offset: 4
+    bit_size: 1
+  - name: EZIP1
+    description: 0 - no reset; 1 - reset
+    bit_offset: 5
+    bit_size: 1
+  - name: EPIC
+    description: 0 - no reset; 1 - reset
+    bit_offset: 6
+    bit_size: 1
+  - name: LCDC1
+    description: 0 - no reset; 1 - reset
+    bit_offset: 7
+    bit_size: 1
+  - name: I2S1
+    description: 0 - no reset; 1 - reset
+    bit_offset: 8
+    bit_size: 1
+  - name: RSVD5
+    bit_offset: 9
+    bit_size: 1
+  - name: SYSCFG1
+    description: 0 - no reset; 1 - reset
+    bit_offset: 10
+    bit_size: 1
+  - name: EFUSEC
+    description: 0 - no reset; 1 - reset
+    bit_offset: 11
+    bit_size: 1
+  - name: AES
+    description: 0 - no reset; 1 - reset
+    bit_offset: 12
+    bit_size: 1
+  - name: CRC1
+    description: 0 - no reset; 1 - reset
+    bit_offset: 13
+    bit_size: 1
+  - name: TRNG
+    description: 0 - no reset; 1 - reset
+    bit_offset: 14
+    bit_size: 1
+  - name: GPTIM1
+    description: 0 - no reset; 1 - reset
+    bit_offset: 15
+    bit_size: 1
+  - name: GPTIM2
+    description: 0 - no reset; 1 - reset
+    bit_offset: 16
+    bit_size: 1
+  - name: BTIM1
+    description: 0 - no reset; 1 - reset
+    bit_offset: 17
+    bit_size: 1
+  - name: BTIM2
+    description: 0 - no reset; 1 - reset
+    bit_offset: 18
+    bit_size: 1
+  - name: WDT1
+    bit_offset: 19
+    bit_size: 1
+  - name: SPI1
+    description: 0 - no reset; 1 - reset
+    bit_offset: 20
+    bit_size: 1
+  - name: SPI2
+    description: 0 - no reset; 1 - reset
+    bit_offset: 21
+    bit_size: 1
+  - name: EXTDMA
+    description: 0 - no reset; 1 - reset
+    bit_offset: 22
+    bit_size: 1
+  - name: RSVD3
+    bit_offset: 23
+    bit_size: 2
+  - name: PDM1
+    description: 0 - no reset; 1 - reset
+    bit_offset: 25
+    bit_size: 1
+  - name: RSVD2
+    bit_offset: 26
+    bit_size: 1
+  - name: I2C1
+    description: 0 - no reset; 1 - reset
+    bit_offset: 27
+    bit_size: 1
+  - name: I2C2
+    description: 0 - no reset; 1 - reset
+    bit_offset: 28
+    bit_size: 1
+  - name: RSVD
+    bit_offset: 29
+    bit_size: 2
+  - name: PTC1
+    description: 0 - no reset; 1 - reset
+    bit_offset: 31
+    bit_size: 1
+fieldset/RSTR2:
+  description: Reset Register 2
+  fields:
+  - name: GPIO1
+    description: 0 - no reset; 1 - reset
+    bit_offset: 0
+    bit_size: 1
+  - name: MPI1
+    description: 0 - no reset; 1 - reset
+    bit_offset: 1
+    bit_size: 1
+  - name: MPI2
+    description: 0 - no reset; 1 - reset
+    bit_offset: 2
+    bit_size: 1
+  - name: RSVD8
+    bit_offset: 3
+    bit_size: 1
+  - name: SDMMC1
+    description: 0 - no reset; 1 - reset
+    bit_offset: 4
+    bit_size: 1
+  - name: RSVD7
+    bit_offset: 5
+    bit_size: 1
+  - name: USBC
+    description: 0 - no reset; 1 - reset
+    bit_offset: 6
+    bit_size: 1
+  - name: RSVD6
+    bit_offset: 7
+    bit_size: 1
+  - name: I2C3
+    description: 0 - no reset; 1 - reset
+    bit_offset: 8
+    bit_size: 1
+  - name: ATIM1
+    description: 0 - no reset; 1 - reset
+    bit_offset: 9
+    bit_size: 1
+  - name: RSVD5
+    bit_offset: 10
+    bit_size: 2
+  - name: USART3
+    description: 0 - no reset; 1 - reset
+    bit_offset: 12
+    bit_size: 1
+  - name: RSVD4
+    bit_offset: 13
+    bit_size: 6
+  - name: AUDCODEC
+    description: 0 - no reset; 1 - reset
+    bit_offset: 19
+    bit_size: 1
+  - name: AUDPRC
+    description: 0 - no reset; 1 - reset
+    bit_offset: 20
+    bit_size: 1
+  - name: RSVD3
+    bit_offset: 21
+    bit_size: 1
+  - name: GPADC
+    description: 0 - no reset; 1 - reset
+    bit_offset: 22
+    bit_size: 1
+  - name: TSEN
+    description: 0 - no reset; 1 - reset
+    bit_offset: 23
+    bit_size: 1
+  - name: RSVD2
+    bit_offset: 24
+    bit_size: 1
+  - name: I2C4
+    description: 0 - no reset; 1 - reset
+    bit_offset: 25
+    bit_size: 1
+  - name: RSVD
+    bit_offset: 26
+    bit_size: 6
+fieldset/USBCR:
+  description: USBC Control Register
+  fields:
+  - name: DIV
+    description: USB function clock is USB source clock divided by DIV. After divider, USB function clock must be 60MHz. For example, if USBC clock source is 240MHz clk_dll2, DIV should be 4.
+    bit_offset: 0
+    bit_size: 3
+  - name: RSVD
+    bit_offset: 3
+    bit_size: 29

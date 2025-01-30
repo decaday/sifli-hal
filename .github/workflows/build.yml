@@ -24,13 +24,14 @@ jobs:
     - name: Build sifli-hal sf32lb52x
       run: |
         cd sifli-hal
+        cargo update
         cargo build --verbose --features "sf32lb52x rt defmt"
         cd $GITHUB_WORKSPACE
     - name: Build Examples
       run: |
         for d in $(ls -1 ./examples); do
           if [ -f "./examples/$d/Cargo.toml" ]; then
-            (cd ./examples/$d && cargo build --release)
+            (cd ./examples/$d && cargo update && cargo build --release)
           fi
         done
         cd $GITHUB_WORKSPACE

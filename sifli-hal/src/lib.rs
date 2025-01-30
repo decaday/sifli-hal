@@ -1,5 +1,5 @@
 #![no_std]
-#![doc = include_str!("../README.md")]
+#![doc = include_str!("../../README.md")]
 
 // This mod MUST go first, so that the others see its macros.
 pub(crate) mod fmt;
@@ -81,6 +81,18 @@ fn system_init() {
         cp.SCB.enable_dcache(&mut cp.CPUID);
     }
 }
+
+pub(crate) mod _generated {
+    #![allow(dead_code)]
+    #![allow(unused_imports)]
+    #![allow(non_snake_case)]
+    #![allow(missing_docs)]
+
+    include!(concat!(env!("OUT_DIR"), "/_generated.rs"));
+}
+
+// pub use _generated::interrupt;
+// pub use _generated::{peripherals, Peripherals};
 
 /// Macro to bind interrupts to handlers.
 ///

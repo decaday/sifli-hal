@@ -1,0 +1,140 @@
+# Incomplete
+HCPU:
+  - name: HPSYS_RCC
+    enable_reset: false
+    bus_clock: pclk
+    kernel_clock: pclk
+  - name: EXTDMA
+    bus_clock: pclk
+    kernel_clock: pclk
+  - name: HPSYS_PINMUX
+    rcc_field: PINMUX1
+    bus_clock: pclk
+    kernel_clock: pclk
+  - name: ATIM1
+    bus_clock: pclk
+    kernel_clock: pclk
+  - name: AUDPRC
+    bus_clock: pclk
+    kernel_clock: pclk
+  - name: EZIP1
+    bus_clock: pclk
+    kernel_clock: pclk
+  - name: EPIC
+    bus_clock: pclk
+    kernel_clock: pclk
+  - name: LCDC1
+    bus_clock: pclk
+    kernel_clock: pclk
+  - name: I2S1
+    bus_clock: pclk
+    kernel_clock: pclk
+  - name: HPSYS_CFG
+    enable_reset: false
+    bus_clock: pclk
+    kernel_clock: pclk
+  - name: EFUSEC
+    bus_clock: pclk
+    kernel_clock: pclk
+  - name: AES
+    bus_clock: pclk
+    kernel_clock: pclk
+  - name: TRNG
+    bus_clock: pclk
+    kernel_clock: pclk
+  - name: MPI1
+    bus_clock: pclk
+    kernel_clock: pclk
+  - name: MPI2
+    bus_clock: pclk
+    kernel_clock: pclk
+  - name: SDMMC1
+    bus_clock: pclk
+    kernel_clock: pclk
+  - name: CRC1
+    bus_clock: pclk
+    kernel_clock: pclk
+  - name: PTC1
+    bus_clock: pclk
+    kernel_clock: pclk
+  - name: DMAC1
+    bus_clock: pclk
+    kernel_clock: pclk
+  - name: USART1
+    bus_clock: pclk
+    kernel_clock: pclk
+  - name: USART2
+    bus_clock: pclk
+    kernel_clock: pclk
+  - name: USART3
+    bus_clock: pclk
+    kernel_clock: pclk
+  - name: GPADC
+    bus_clock: pclk
+    kernel_clock: pclk
+  - name: AUDCODEC
+    bus_clock: pclk
+    kernel_clock: pclk
+  - name: TSEN
+    bus_clock: pclk
+    kernel_clock: pclk
+  - name: GPTIM1
+    bus_clock: pclk
+    kernel_clock: pclk
+  - name: BTIM1
+    bus_clock: pclk
+    kernel_clock: pclk
+  - name: WDT1
+    bus_clock: pclk
+    kernel_clock: pclk
+  - name: SPI1
+    bus_clock: pclk
+    kernel_clock: pclk
+  - name: SPI2
+    bus_clock: pclk
+    kernel_clock: pclk
+  - name: PDM1
+    bus_clock: pclk
+    kernel_clock: pclk
+  - name: I2C1
+    bus_clock: pclk
+    kernel_clock: pclk
+  - name: I2C2
+    bus_clock: pclk
+    kernel_clock: pclk
+  - name: I2C3
+    bus_clock: pclk
+    kernel_clock: pclk
+  - name: I2C4
+    bus_clock: pclk
+    kernel_clock: pclk
+  - name: HPSYS_GPIO
+    rcc_field: GPIO1
+    bus_clock: pclk
+    kernel_clock: pclk
+  - name: GPTIM2
+    bus_clock: pclk
+    kernel_clock: pclk
+  - name: BTIM2
+    bus_clock: pclk
+    kernel_clock: pclk
+  - name: HPSYS_AON
+    enable_reset: false
+    bus_clock: pclk
+    kernel_clock: pclk
+  - name: LPTIM1
+    enable_reset: false
+    bus_clock: pclk
+    kernel_clock: pclk
+  - name: LPTIM2
+    enable_reset: false
+    bus_clock: pclk
+    kernel_clock: pclk
+  - name: PMUC
+    enable_reset: false
+    bus_clock: pclk
+    kernel_clock: pclk
+  - name: IWDT
+    enable_reset: false
+    bus_clock: pclk
+    kernel_clock: pclk

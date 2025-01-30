@@ -13,7 +13,7 @@ readme = "README.md"
 license = "MIT OR Apache-2.0"
 
 [dependencies]
-# sifli-pac = { version = "0.0.0", path = "../sifli-pac" }
+# sifli-pac = { version = "0.0.0", path = "../../sifli-pac" }
 sifli-pac = { git = "https://github.com/OpenSiFli/sifli-pac" }
 
 embassy-sync = { version = "0.6.2" }
@@ -28,7 +28,12 @@ embassy-hal-internal = { version = "0.2.0", features = ["cortex-m", "prio-bits-3
 defmt = { version = "0.3.10", optional = true }
 log = { version = "0.4.14", optional = true }
 critical-section = "1.2.0"
-cortex-m = "0.7"
+
+# TODO: multicore critical-section impl
+cortex-m = { version = "0.7.7", features = [
+    "critical-section-single-core",
+    "critical-section",
+] }
 cortex-m-rt = "0.7"
 
 embedded-hal-02 = { package = "embedded-hal", version = "0.2.6", features = ["unproven"] }
@@ -40,6 +45,12 @@ embedded-io = { version = "0.6.1" }
 embedded-io-async = { version = "0.6.1" }
 embedded-storage = { version = "0.3" }
 embedded-storage-async = { version = "0.4.1" }
+
+[build-dependencies]
+serde = { version = "1.0", features = ["derive"] }
+serde_yaml = "0.9"
+proc-macro2 = "1.0.93"
+quote = "1.0.38"
 
 [features]
 # default = ["rt"]
