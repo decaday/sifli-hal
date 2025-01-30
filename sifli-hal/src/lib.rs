@@ -7,6 +7,8 @@ pub(crate) mod fmt;
 mod chip;
 use chip::*;
 
+pub mod rcc;
+
 #[cfg(feature = "unstable-pac")]
 pub use sifli_pac as pac;
 #[cfg(not(feature = "unstable-pac"))]
