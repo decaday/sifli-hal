@@ -5,6 +5,7 @@ use std::io::Write;
 use std::path::Path;
 use std::path::PathBuf;
 use std::collections::BTreeMap;
+use std::process::Command;
 
 use proc_macro2::TokenStream;
 use quote::quote;
@@ -67,9 +68,9 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
     let implementations = generate_rcc_impl(&peripherals, &fieldsets);
 
     // Write to file
-    let mut file = File::create(dest_path).unwrap();
+    let mut file = File::create(&dest_path).unwrap();
     write!(file, "{}", implementations).unwrap();
-
+    rustfmt(&dest_path);
     Ok(())
 }
 
@@ -164,6 +165,26 @@ impl<T: Iterator> IteratorExt for T {
                 Some(_) => Err(GetOneError::Multiple),
                 None => Ok(res),
             },
+        }
+    }
+}
+
+/// rustfmt a given path.
+/// Failures are logged to stderr and ignored.
+fn rustfmt(path: impl AsRef<Path>) {
+    let path = path.as_ref();
+    match Command::new("rustfmt").args([path]).output() {
+        Err(e) => {
+            eprintln!("failed to exec rustfmt {:?}: {:?}", path, e);
+        }
+        Ok(out) => {
+            if !out.status.success() {
+                eprintln!("rustfmt {:?} failed:", path);
+                eprintln!("=== STDOUT:");
+                std::io::stderr().write_all(&out.stdout).unwrap();
+                eprintln!("=== STDERR:");
+                std::io::stderr().write_all(&out.stderr).unwrap();
+            }
         }
     }
 }
