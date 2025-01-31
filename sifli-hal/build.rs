@@ -64,12 +64,23 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
     let out_dir = PathBuf::from(std::env::var("OUT_DIR").unwrap());
     let dest_path = out_dir.join("_generated.rs");
 
+    let mut token_stream = TokenStream::new();
+
+    // Generate interrupt mod
+    let interrupt_mod = generate_interrupt_mod(&interrupts);
+    token_stream.extend(interrupt_mod);
+
+    // Generate peripherals singleton
+    let peripherals_singleton = generate_peripherals_singleton(&peripherals);
+    token_stream.extend(peripherals_singleton);
+
     // Generate implementations
     let implementations = generate_rcc_impl(&peripherals, &fieldsets);
+    token_stream.extend(implementations);
 
     // Write to file
     let mut file = File::create(&dest_path).unwrap();
-    write!(file, "{}", implementations).unwrap();
+    write!(file, "{}", token_stream).unwrap();
     rustfmt(&dest_path);
     Ok(())
 }
@@ -118,7 +129,6 @@ fn generate_rcc_impl(peripherals: &Peripherals, fieldsets: &BTreeMap<String, Fie
                 #[inline(always)]
                 fn rcc_disable() {
                     crate::pac::HPSYS_RCC.#enr_reg_ident().modify(|w| w.#field_set_ident(false));
-                    
                 }
 
                 #[inline(always)]
@@ -146,6 +156,54 @@ fn find_field_in_registers<'a>(
         }
     }
     None
+}
+
+pub fn generate_interrupt_mod(interrupts: &Interrupts) -> TokenStream {
+    let interrupt_names: Vec<_> = interrupts.hcpu
+        .iter()
+        .map(|int| {
+            let name = &int.name;
+            quote::format_ident!("{}", name)
+        })
+        .collect();
+    quote! {
+        embassy_hal_internal::interrupt_mod!(
+            #(#interrupt_names),*
+        );
+    }
+}
+
+pub fn generate_peripherals_singleton(peripherals: &Peripherals) -> TokenStream {
+    let peripheral_names: Vec<_> = peripherals.hcpu
+        .iter()
+        .map(|p| {
+            let name = &p.name;
+            quote::format_ident!("{}", name)
+        })
+        .collect();
+    
+    // TODO: move pin num to chip info
+    let gpio_pins: Vec<_> = (0..=44)
+        .map(|i| {
+            let pin_name = format!("PA{}", i);
+            quote::format_ident!("{}", pin_name)
+        })
+        .collect();
+    
+    let dmac_channels: Vec<_> = (0..=8)
+        .map(|i| {
+            let channel_name = format!("DMAC_CH{}", i);
+            quote::format_ident!("{}", channel_name)
+        })
+        .collect();
+    
+    quote! {
+        embassy_hal_internal::peripherals! {
+            #(#peripheral_names,)*
+            #(#gpio_pins,)*
+            #(#dmac_channels,)*
+        }
+    }
 }
 
 enum GetOneError {

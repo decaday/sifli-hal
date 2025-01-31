@@ -4,9 +4,6 @@
 // This mod MUST go first, so that the others see its macros.
 pub(crate) mod fmt;
 
-mod chip;
-use chip::*;
-
 pub mod rcc;
 
 #[cfg(feature = "unstable-pac")]
@@ -91,8 +88,8 @@ pub(crate) mod _generated {
     include!(concat!(env!("OUT_DIR"), "/_generated.rs"));
 }
 
-// pub use _generated::interrupt;
-// pub use _generated::{peripherals, Peripherals};
+pub use _generated::interrupt;
+pub use _generated::{peripherals, Peripherals};
 
 /// Macro to bind interrupts to handlers.
 ///
