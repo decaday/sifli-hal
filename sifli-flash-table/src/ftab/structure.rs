@@ -34,7 +34,7 @@ pub(crate) struct FlashTables {
     /// LCPU-Ping
     pub(crate) lcpu: FlashTable,
     /// BCPU-Ping
-    pub(crate) secondary_bootloader: FlashTable,
+    pub(crate) secondary_bl: FlashTable,
     /// HCPU-Ping
     pub(crate) hcpu: FlashTable,
     /// Flash Boot Patch
@@ -42,7 +42,7 @@ pub(crate) struct FlashTables {
     /// LCPU Pong
     pub(crate) lcpu2: FlashTable,
     /// BCPU Pong
-    pub(crate) secondary_bootloader2: FlashTable,
+    pub(crate) secondary_bl2: FlashTable,
     /// HCPU Pong
     pub(crate) hcpu2: FlashTable,
     /// Ram Boot Patch
@@ -71,7 +71,7 @@ pub(crate) struct Imgs {
     /// LCPU-Ping
     pub(crate) lcpu: ImageHeaderEnc,
     /// BCPU-Ping
-    pub(crate) secondary_bootloader: ImageHeaderEnc,
+    pub(crate) secondary_bl: ImageHeaderEnc,
     /// HCPU-Ping
     pub(crate) hcpu: ImageHeaderEnc,
     /// Flash Boot Patch
@@ -79,7 +79,7 @@ pub(crate) struct Imgs {
     /// LCPU Pong
     pub(crate) lcpu2: ImageHeaderEnc,
     /// BCPU Pong
-    pub(crate) secondary_bootloader2: ImageHeaderEnc,
+    pub(crate) secondary_bl2: ImageHeaderEnc,
     /// HCPU Pong
     pub(crate) hcpu2: ImageHeaderEnc,
     /// Ram Boot Patch
