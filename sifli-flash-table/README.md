@@ -1,9 +1,36 @@
-## TODOs:
-``` c
-_init, _fini
+# SiFli Flash Table
 
-#ifdef QSPI2
-    #undef FLASH_USER_CODE_START_ADDR
-    #define FLASH_USER_CODE_START_ADDR 0x64020000
-#endif
+A command-line tool (Cli) used to generate a flash table firmware for SiFli MCUs.
+
+## Usage
+
+```bash
+sifli-flash-table gen --ptab test\em-lb525\ptab.json --output ftab.bin
 ```
+
+This is functionally equivalent to:
+
+- SiFli-SDK [GenFtabCFile](https://github.com/OpenSiFli/SiFli-SDK/blob/8f42a6916c55c6b44ec45e1c0d137b15f7fa7fa3/tools/build/resource.py#L684)
+- SiFli-SDK [mem_map.h](https://github.com/OpenSiFli/SiFli-SDK/blob/8f42a6916c55c6b44ec45e1c0d137b15f7fa7fa3/drivers/cmsis/sf32lb52x/mem_map.h)
+
+The difference is that `sifli-flash-table` generates the flash table using code, instead of cross-compiling the table.
+
+Other references:
+
+- SiFli-SDK [boot_loader](https://github.com/OpenSiFli/SiFli-SDK/blob/8f42a6916c55c6b44ec45e1c0d137b15f7fa7fa3/example/boot_loader/project/butterflmicro/board)
+
+- SiFli-SDK [flash table中，flash bootloader的地址问题和宏覆盖问题 · Issue #10](https://github.com/OpenSiFli/SiFli-SDK/issues/10)
+- [应用程序启动流程 - SiFli SDK编程指南 文档](https://docs.sifli.com/projects/sdk/v2.3/sf32lb52x/app_development/startup_flow_sf32lb52x.html)
+- [安全引导加载 - SiFli SDK编程指南 文档](https://docs.sifli.com/projects/sdk/v2.3/sf32lb52x/bootloader.html)
+
+## Test
+
+In [lib.rs](https://chatgpt.com/c/lib.rs), there is a test called `test_ptab_ftab_conversion`, which automatically tests the development board's flash table generation in the [test](https://chatgpt.com/c/test) folder and compares it with the precompiled `ftab.bin` from the SDK.
+
+## TODOs:
+
+- Test on actual chips
+- Use real user code and bootloader firmware size values
+- Write automated tests for more boards
+- Confirm if `_init` and `_fini` are invalid
+- Verify if addresses starting with `0x6xxx_xxxx` are use
