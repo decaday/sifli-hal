@@ -1,0 +1,34 @@
+name: Build sifli-flash-table
+
+on:
+  push:
+    branches: [ "main" ]
+    paths:
+      - 'sifli-flash-table/**'
+      - '.github/workflows/build-ftab.yml'
+  pull_request:
+    branches: [ "main" ]
+    paths:
+      - 'sifli-flash-table/**'
+      - '.github/workflows/build-ftab.yml'
+
+env:
+  CARGO_TERM_COLOR: always
+
+jobs:
+  build:
+
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v4
+    - name: Build sifli-flash-table
+      run: |
+        cd sifli-flash-table
+        cargo update
+        cargo build --verbose
+        cd $GITHUB_WORKSPACE
+    - name: cargo test
+      run: |
+        cd sifli-flash-table
+        cargo test

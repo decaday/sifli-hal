@@ -1,10 +1,16 @@
-name: Build
+name: Build sifli-hal & examples
 
 on:
   push:
     branches: [ "main" ]
+    paths:
+      - 'sifli-hal/**'
+      - '.github/workflows/build-hal.yml'
   pull_request:
     branches: [ "main" ]
+    paths:
+      - 'sifli-hal/**'
+      - '.github/workflows/build-hal.yml'
 
 env:
   CARGO_TERM_COLOR: always
