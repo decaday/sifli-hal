@@ -1,5 +1,5 @@
 #![no_std]
-#![doc = include_str!("../../README.md")]
+#![doc = include_str!("../README.md")]
 
 // This mod MUST go first, so that the others see its macros.
 pub(crate) mod fmt;
