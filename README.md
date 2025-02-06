@@ -1,4 +1,4 @@
-# SiFli HAL
+# SiFli Rust HAL
 
 [![Crates.io][badge-license]][crates]
 [![Crates.io][badge-version]][crates]
@@ -9,9 +9,9 @@
 [badge-version]: https://img.shields.io/crates/v/sifli-hal?style=for-the-badge
 [badge-docsrs]: https://img.shields.io/docsrs/sifli-hal?style=for-the-badge
 [badge-support-status]: https://img.shields.io/badge/Support_status-Community-yellow?style=for-the-badge
-[crates]: https://crates.io/crates/sifli-hal
+[crates]: https://crates.io/crates/sifli-hal-rs
 [docsrs]: https://docs.rs/sifli-hal
-[githubrepo]: https://github.com/OpenSiFli/sifli-hal
+[githubrepo]: https://github.com/OpenSiFli/sifli-hal-rs
 
 Rust Hardware Abstraction Layer (HAL) for SiFli MCUs.
 
@@ -26,9 +26,9 @@ Rust Hardware Abstraction Layer (HAL) for SiFli MCUs.
 ## Crates:
 | Github                                                       | crates.io                                     | docs.rs                                    | status              |
 | ------------------------------------------------------------ | --------------------------------------------- | ------------------------------------------ | ------------------- |
-| [sifli-hal](https://github.com/OpenSiFli/sifli-hal/tree/main/sifli-hal) | [![Crates.io][hal-badge-version]][hal-crates] | [![docs.rs][hal-badge-docsrs]][hal-docsrs] | Community Supported |
-| [sifli-pac](https://github.com/OpenSiFli/sifli-pac)          | [![Crates.io][pac-badge-version]][pac-crates] | [![docs.rs][pac-badge-docsrs]][pac-docsrs] | Community Supported |
-| [sifli-flash-table ](https://github.com/OpenSiFli/sifli-hal/tree/main/sifli-flash-table) |                                               |                                            | Community Supported |
+| [sifli-hal](https://github.com/OpenSiFli/sifli-hal-rs/tree/main/sifli-hal) | [![Crates.io][hal-badge-version]][hal-cratesio] | [![docs.rs][hal-badge-docsrs]][hal-docsrs] | Community Supported |
+| [sifli-pac](https://github.com/OpenSiFli/sifli-pac)          | [![Crates.io][pac-badge-version]][pac-cratesio] | [![docs.rs][pac-badge-docsrs]][pac-docsrs] | Community Supported |
+| [sifli-flash-table ](https://github.com/OpenSiFli/sifli-hal-rs/tree/main/sifli-flash-table) |                                               |                                            | Community Supported |
 
 [hal-crateio]: https://crates.io/crates/sifli-hal
 [hal-docsrs]: https://docs.rs/sifli-hal
