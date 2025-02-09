@@ -11,3 +11,8 @@ target/
 
 # RustRover
 .idea/
+# Visual Studio Code
+.vscode/
+
+scripts/output/
+output/

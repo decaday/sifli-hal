@@ -1,0 +1,581 @@
+HCPU:
+- pin: GPIO_A0
+  functions:
+  - function: GPIO_A0
+    value: 0
+  - function: LCDC1_SPI_RSTB
+    value: 1
+  - function: PA00_I2C_UART
+    value: 4
+  - function: PA00_TIM
+    value: 5
+  - function: LCDC1_8080_RSTB
+    value: 7
+- pin: GPIO_A1
+  functions:
+  - function: GPIO_A1
+    value: 0
+  - function: PA01_I2C_UART
+    value: 4
+  - function: PA01_TIM
+    value: 5
+- pin: GPIO_A2
+  functions:
+  - function: GPIO_A2
+    value: 0
+  - function: LCDC1_SPI_TE
+    value: 1
+  - function: I2S1_MCLK
+    value: 3
+  - function: PA02_I2C_UART
+    value: 4
+  - function: PA02_TIM
+    value: 5
+  - function: LCDC1_JDI_B2
+    value: 6
+  - function: LCDC1_8080_TE
+    value: 7
+  - function: DBG_DO0
+    value: 9
+  - function: EDT_CHANNEL_IN0
+    value: 11
+- pin: GPIO_A3
+  functions:
+  - function: GPIO_A3
+    value: 0
+  - function: LCDC1_SPI_CS
+    value: 1
+  - function: I2S1_SDO
+    value: 3
+  - function: PA03_I2C_UART
+    value: 4
+  - function: PA03_TIM
+    value: 5
+  - function: LCDC1_JDI_B1
+    value: 6
+  - function: LCDC1_8080_CS
+    value: 7
+  - function: DBG_DO1
+    value: 9
+  - function: EDT_CHANNEL_IN1
+    value: 11
+- pin: GPIO_A4
+  functions:
+  - function: GPIO_A4
+    value: 0
+  - function: LCDC1_SPI_CLK
+    value: 1
+  - function: I2S1_SDI
+    value: 3
+  - function: PA04_I2C_UART
+    value: 4
+  - function: PA04_TIM
+    value: 5
+  - function: LCDC1_JDI_G1
+    value: 6
+  - function: LCDC1_8080_WR
+    value: 7
+  - function: DBG_DO2
+    value: 9
+  - function: EDT_CHANNEL_IN2
+    value: 11
+- pin: GPIO_A5
+  functions:
+  - function: GPIO_A5
+    value: 0
+  - function: LCDC1_SPI_DIO0
+    value: 1
+  - function: I2S1_BCK
+    value: 3
+  - function: PA05_I2C_UART
+    value: 4
+  - function: PA05_TIM
+    value: 5
+  - function: LCDC1_JDI_R1
+    value: 6
+  - function: LCDC1_8080_RD
+    value: 7
+  - function: DBG_DO3
+    value: 9
+  - function: EDT_CHANNEL_IN3
+    value: 11
+- pin: GPIO_A6
+  functions:
+  - function: GPIO_A6
+    value: 0
+  - function: LCDC1_SPI_DIO1
+    value: 1
+  - function: I2S1_LRCK
+    value: 3
+  - function: PA06_I2C_UART
+    value: 4
+  - function: PA06_TIM
+    value: 5
+  - function: LCDC1_JDI_HST
+    value: 6
+  - function: LCDC1_8080_DC
+    value: 7
+  - function: DBG_DO4
+    value: 9
+  - function: EDT_CHANNEL_IN4
+    value: 11
+- pin: GPIO_A7
+  functions:
+  - function: GPIO_A7
+    value: 0
+  - function: LCDC1_SPI_DIO2
+    value: 1
+  - function: PDM1_CLK
+    value: 3
+  - function: PA07_I2C_UART
+    value: 4
+  - function: PA07_TIM
+    value: 5
+  - function: LCDC1_JDI_ENB
+    value: 6
+  - function: LCDC1_8080_DIO0
+    value: 7
+  - function: DBG_DO5
+    value: 9
+  - function: EDT_CHANNEL_IN5
+    value: 11
+- pin: GPIO_A8
+  functions:
+  - function: GPIO_A8
+    value: 0
+  - function: LCDC1_SPI_DIO3
+    value: 1
+  - function: PDM1_DATA
+    value: 3
+  - function: PA08_I2C_UART
+    value: 4
+  - function: PA08_TIM
+    value: 5
+  - function: LCDC1_JDI_VST
+    value: 6
+  - function: LCDC1_8080_DIO1
+    value: 7
+  - function: DBG_DO6
+    value: 9
+  - function: BIST_DONE
+    value: 10
+- pin: GPIO_A9
+  functions:
+  - function: GPIO_A9
+    value: 0
+  - function: PA09_I2C_UART
+    value: 4
+  - function: PA09_TIM
+    value: 5
+  - function: DBG_DO7
+    value: 9
+  - function: BIST_FAIL
+    value: 10
+- pin: GPIO_A10
+  functions:
+  - function: GPIO_A10
+    value: 0
+  - function: PA10_I2C_UART
+    value: 4
+  - function: PA10_TIM
+    value: 5
+- pin: GPIO_A11
+  functions:
+  - function: GPIO_A11
+    value: 0
+  - function: PA11_I2C_UART
+    value: 4
+  - function: PA11_TIM
+    value: 5
+  - function: AUD_CLK_EXT
+    value: 9
+  - function: BIST_CLK
+    value: 10
+  - function: SCAN_CLK
+    value: 11
+- pin: GPIO_A12
+  functions:
+  - function: GPIO_A12
+    value: 0
+  - function: MPI2_CS
+    value: 1
+  - function: SD1_DIO2
+    value: 2
+  - function: PA12_I2C_UART
+    value: 4
+  - function: PA12_TIM
+    value: 5
+  - function: BIST_RST
+    value: 10
+  - function: SCAN_RSTB
+    value: 11
+- pin: GPIO_A13
+  functions:
+  - function: GPIO_A13
+    value: 0
+  - function: MPI2_DIO1
+    value: 1
+  - function: SD1_DIO3
+    value: 2
+  - function: PA13_I2C_UART
+    value: 4
+  - function: PA13_TIM
+    value: 5
+  - function: SCAN_EN
+    value: 11
+- pin: GPIO_A14
+  functions:
+  - function: GPIO_A14
+    value: 0
+  - function: MPI2_DIO2
+    value: 1
+  - function: SD1_CLK
+    value: 2
+  - function: PA14_I2C_UART
+    value: 4
+  - function: PA14_TIM
+    value: 5
+  - function: EDT_CLK
+    value: 11
+- pin: GPIO_A15
+  functions:
+  - function: GPIO_A15
+    value: 0
+  - function: MPI2_DIO0
+    value: 1
+  - function: SD1_CMD
+    value: 2
+  - function: PA15_I2C_UART
+    value: 4
+  - function: PA15_TIM
+    value: 5
+  - function: EDT_UPDATE
+    value: 11
+- pin: GPIO_A16
+  functions:
+  - function: GPIO_A16
+    value: 0
+  - function: MPI2_CLK
+    value: 1
+  - function: SD1_DIO0
+    value: 2
+  - function: PA16_I2C_UART
+    value: 4
+  - function: PA16_TIM
+    value: 5
+  - function: EDT_BYPASS
+    value: 11
+- pin: GPIO_A17
+  functions:
+  - function: GPIO_A17
+    value: 0
+  - function: MPI2_DIO3
+    value: 1
+  - function: SD1_DIO1
+    value: 2
+  - function: PA17_I2C_UART
+    value: 4
+  - function: PA17_TIM
+    value: 5
+- pin: GPIO_A18
+  functions:
+  - function: GPIO_A18
+    value: 0
+  - function: SWDIO
+    value: 2
+  - function: PA18_I2C_UART
+    value: 4
+  - function: PA18_TIM
+    value: 5
+- pin: GPIO_A19
+  functions:
+  - function: GPIO_A19
+    value: 0
+  - function: SWCLK
+    value: 2
+  - function: PA19_I2C_UART
+    value: 4
+  - function: PA19_TIM
+    value: 5
+- pin: GPIO_A20
+  functions:
+  - function: GPIO_A20
+    value: 0
+  - function: PA20_I2C_UART
+    value: 4
+  - function: PA20_TIM
+    value: 5
+  - function: DBG_CLK
+    value: 9
+- pin: GPIO_A21
+  functions:
+  - function: GPIO_A21
+    value: 0
+  - function: PA21_I2C_UART
+    value: 4
+  - function: PA21_TIM
+    value: 5
+- pin: GPIO_A22
+  functions:
+  - function: GPIO_A22
+    value: 0
+  - function: PDM1_CLK
+    value: 3
+  - function: PA22_I2C_UART
+    value: 4
+  - function: PA22_TIM
+    value: 5
+- pin: GPIO_A23
+  functions:
+  - function: GPIO_A23
+    value: 0
+  - function: PDM1_DATA
+    value: 3
+  - function: PA23_I2C_UART
+    value: 4
+  - function: PA23_TIM
+    value: 5
+- pin: GPIO_A24
+  functions:
+  - function: GPIO_A24
+    value: 0
+  - function: SPI1_DIO
+    value: 2
+  - function: I2S1_MCLK
+    value: 3
+  - function: PA24_I2C_UART
+    value: 4
+  - function: PA24_TIM
+    value: 5
+- pin: GPIO_A25
+  functions:
+  - function: GPIO_A25
+    value: 0
+  - function: SPI1_DI
+    value: 2
+  - function: I2S1_SDO
+    value: 3
+  - function: PA25_I2C_UART
+    value: 4
+  - function: PA25_TIM
+    value: 5
+- pin: GPIO_A26
+  functions:
+  - function: GPIO_A26
+    value: 0
+  - function: PA26_I2C_UART
+    value: 4
+  - function: PA26_TIM
+    value: 5
+- pin: GPIO_A27
+  functions:
+  - function: GPIO_A27
+    value: 0
+  - function: PA27_I2C_UART
+    value: 4
+  - function: PA27_TIM
+    value: 5
+- pin: GPIO_A28
+  functions:
+  - function: GPIO_A28
+    value: 0
+  - function: SPI1_CLK
+    value: 2
+  - function: I2S1_SDI
+    value: 3
+  - function: PA28_I2C_UART
+    value: 4
+  - function: PA28_TIM
+    value: 5
+- pin: GPIO_A29
+  functions:
+  - function: GPIO_A29
+    value: 0
+  - function: SPI1_CS
+    value: 2
+  - function: I2S1_BCK
+    value: 3
+  - function: PA29_I2C_UART
+    value: 4
+  - function: PA29_TIM
+    value: 5
+- pin: GPIO_A30
+  functions:
+  - function: GPIO_A30
+    value: 0
+  - function: I2S1_LRCK
+    value: 3
+  - function: PA30_I2C_UART
+    value: 4
+  - function: PA30_TIM
+    value: 5
+- pin: GPIO_A31
+  functions:
+  - function: GPIO_A31
+    value: 0
+  - function: PA31_I2C_UART
+    value: 4
+  - function: PA31_TIM
+    value: 5
+  - function: DBG_DO8
+    value: 9
+- pin: GPIO_A32
+  functions:
+  - function: GPIO_A32
+    value: 0
+  - function: PA32_I2C_UART
+    value: 4
+  - function: PA32_TIM
+    value: 5
+- pin: GPIO_A33
+  functions:
+  - function: GPIO_A33
+    value: 0
+  - function: PA33_I2C_UART
+    value: 4
+  - function: PA33_TIM
+    value: 5
+- pin: GPIO_A34
+  functions:
+  - function: GPIO_A34
+    value: 0
+  - function: PA34_I2C_UART
+    value: 4
+  - function: PA34_TIM
+    value: 5
+- pin: GPIO_A35
+  functions:
+  - function: GPIO_A35
+    value: 0
+  - function: PA35_I2C_UART
+    value: 4
+  - function: PA35_TIM
+    value: 5
+- pin: GPIO_A36
+  functions:
+  - function: GPIO_A36
+    value: 0
+  - function: PA36_I2C_UART
+    value: 4
+  - function: PA36_TIM
+    value: 5
+- pin: GPIO_A37
+  functions:
+  - function: GPIO_A37
+    value: 0
+  - function: SPI2_DIO
+    value: 2
+  - function: PA37_I2C_UART
+    value: 4
+  - function: PA37_TIM
+    value: 5
+  - function: LCDC1_8080_DIO2
+    value: 7
+  - function: DBG_DO9
+    value: 9
+- pin: GPIO_A38
+  functions:
+  - function: GPIO_A38
+    value: 0
+  - function: SPI2_DI
+    value: 2
+  - function: PA38_I2C_UART
+    value: 4
+  - function: PA38_TIM
+    value: 5
+- pin: GPIO_A39
+  functions:
+  - function: GPIO_A39
+    value: 0
+  - function: SPI2_CLK
+    value: 2
+  - function: PA39_I2C_UART
+    value: 4
+  - function: PA39_TIM
+    value: 5
+  - function: LCDC1_JDI_VCK
+    value: 6
+  - function: LCDC1_8080_DIO3
+    value: 7
+  - function: DBG_DO10
+    value: 9
+  - function: EDT_CHANNEL_OUT0
+    value: 11
+- pin: GPIO_A40
+  functions:
+  - function: GPIO_A40
+    value: 0
+  - function: SPI2_CS
+    value: 2
+  - function: PA40_I2C_UART
+    value: 4
+  - function: PA40_TIM
+    value: 5
+  - function: LCDC1_JDI_XRST
+    value: 6
+  - function: LCDC1_8080_DIO4
+    value: 7
+  - function: DBG_DO11
+    value: 9
+  - function: EDT_CHANNEL_OUT1
+    value: 11
+- pin: GPIO_A41
+  functions:
+  - function: GPIO_A41
+    value: 0
+  - function: PA41_I2C_UART
+    value: 4
+  - function: PA41_TIM
+    value: 5
+  - function: LCDC1_JDI_HCK
+    value: 6
+  - function: LCDC1_8080_DIO5
+    value: 7
+  - function: DBG_DO12
+    value: 9
+  - function: EDT_CHANNEL_OUT2
+    value: 11
+- pin: GPIO_A42
+  functions:
+  - function: GPIO_A42
+    value: 0
+  - function: PA42_I2C_UART
+    value: 4
+  - function: PA42_TIM
+    value: 5
+  - function: LCDC1_JDI_R2
+    value: 6
+  - function: LCDC1_8080_DIO6
+    value: 7
+  - function: DBG_DO13
+    value: 9
+  - function: EDT_CHANNEL_OUT3
+    value: 11
+- pin: GPIO_A43
+  functions:
+  - function: GPIO_A43
+    value: 0
+  - function: PA43_I2C_UART
+    value: 4
+  - function: PA43_TIM
+    value: 5
+  - function: LCDC1_JDI_G2
+    value: 6
+  - function: LCDC1_8080_DIO7
+    value: 7
+  - function: DBG_DO14
+    value: 9
+  - function: EDT_CHANNEL_OUT4
+    value: 11
+- pin: GPIO_A44
+  functions:
+  - function: GPIO_A44
+    value: 0
+  - function: PA44_I2C_UART
+    value: 4
+  - function: PA44_TIM
+    value: 5
+  - function: DBG_DO15
+    value: 9
+  - function: EDT_CHANNEL_OUT5
+    value: 11
