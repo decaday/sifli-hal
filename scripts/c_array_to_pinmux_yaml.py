@@ -67,7 +67,7 @@ def create_yaml(pin_data):
     """
     Create YAML structure from pin data
     """
-    return {'HCPU': pin_data}
+    return {'hcpu': pin_data}
 
 def save_yaml(data, output_path):
     """

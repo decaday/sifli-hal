@@ -30,10 +30,7 @@ log = { version = "0.4.14", optional = true }
 critical-section = "1.2.0"
 
 # TODO: multicore critical-section impl
-cortex-m = { version = "0.7.7", features = [
-    "critical-section-single-core",
-    "critical-section",
-] }
+cortex-m = { version = "0.7.7" }
 cortex-m-rt = "0.7"
 
 embedded-hal-02 = { package = "embedded-hal", version = "0.2.6", features = ["unproven"] }
@@ -54,9 +51,12 @@ quote = "1.0.38"
 
 [features]
 # default = ["rt"]
-default = ["rt", "defmt", "sf32lb52x"]
+default = ["rt", "defmt", "set-msplim", "sf32lb52x", "time-driver-gptim2"]
 
 rt = ["sifli-pac/rt"]
+
+set-msplim = []
+
 defmt = ["dep:defmt", 
     "sifli-pac/defmt",
     "embassy-hal-internal/defmt",
@@ -72,3 +72,9 @@ log = ["dep:log"]
 unstable-pac = []
 
 sf32lb52x = ["sifli-pac/sf32lb52x"]
+
+time-driver-atim1 = ["_time-driver"]
+time-driver-gptim1 = ["_time-driver"]
+time-driver-gptim2 = ["_time-driver"]
+
+_time-driver = ["embassy-time-driver", "embassy-time-queue-utils"]

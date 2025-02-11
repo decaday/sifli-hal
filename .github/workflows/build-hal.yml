@@ -31,7 +31,7 @@ jobs:
       run: |
         cd sifli-hal
         cargo update
-        cargo build --verbose --features "sf32lb52x rt defmt"
+        cargo build --verbose --features "sf32lb52x rt defmt" --target thumbv8m.main-none-eabi
         cd $GITHUB_WORKSPACE
     - name: Build Examples
       run: |

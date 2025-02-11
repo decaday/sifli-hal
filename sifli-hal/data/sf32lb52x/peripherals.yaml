@@ -1,5 +1,5 @@
 # Incomplete
-HCPU:
+hcpu:
   - name: HPSYS_RCC
     enable_reset: false
     bus_clock: pclk

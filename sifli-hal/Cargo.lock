@@ -49,7 +49,6 @@ checksum = "8ec610d8f49840a5b376c69663b6369e71f4b34484b9b2eb29fb918d92516cb9"
 dependencies = [
  "bare-metal",
  "bitfield",
- "critical-section",
  "embedded-hal 0.2.7",
  "volatile-register",
 ]
@@ -602,7 +601,7 @@ dependencies = [
 [[package]]
 name = "sifli-pac"
 version = "0.0.0"
-source = "git+https://github.com/OpenSiFli/sifli-pac#fcea0357090f465df784f8f4961c87e0ff314687"
+source = "git+https://github.com/OpenSiFli/sifli-pac#53f9a1c38a110e8c1f38eafb44178f6b7fccfbba"
 dependencies = [
  "cortex-m",
  "cortex-m-rt",

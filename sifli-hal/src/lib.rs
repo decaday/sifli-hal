@@ -1,11 +1,16 @@
 #![no_std]
 #![doc = include_str!("../README.md")]
+use core::arch::global_asm;
 
 // This mod MUST go first, so that the others see its macros.
 pub(crate) mod fmt;
 
 pub mod rcc;
+pub mod gpio;
+// pub mod time_driver;
 
+// Reexports
+pub use embassy_hal_internal::{into_ref, Peripheral, PeripheralRef};
 #[cfg(feature = "unstable-pac")]
 pub use sifli_pac as pac;
 #[cfg(not(feature = "unstable-pac"))]
@@ -49,24 +54,24 @@ pub mod config {
 /// This should only be called once at startup, otherwise it panics.
 pub fn init(_config: config::Config) -> Peripherals {
     system_init();
+
     // Do this first, so that it panics if user is calling `init` a second time
-    // before doing anything important.
-    let peripherals = Peripherals::take();
+        // before doing anything important.
+    let p = Peripherals::take();
 
-    // unsafe {
-    //     clocks::init(config.clocks);
-    //     #[cfg(feature = "time-driver")]
-    //     time_driver::init();
-    //     dma::init();
-    //     gpio::init();
-    // }
-
-    peripherals
+    unsafe {
+        // clocks::init(config.clocks);
+        // #[cfg(feature = "time-driver")]
+        // time_driver::init();
+        // dma::init();
+        gpio::init();
+    }
+    p
 }
 
 fn system_init() {
     unsafe {
-        let mut cp = cortex_m::Peripherals::steal();  
+        let mut cp = cortex_m::Peripherals::steal();
 
         // enable CP0/CP1/CP2 Full Access
         cp.SCB.cpacr.modify(|r| {
@@ -90,6 +95,21 @@ pub(crate) mod _generated {
 
 pub use _generated::interrupt;
 pub use _generated::{peripherals, Peripherals};
+
+/// Performs a busy-wait delay for a specified number of microseconds.
+#[allow(unused)]
+pub(crate) fn blocking_delay_us(us: u32) {
+    #[cfg(feature = "time")]
+    embassy_time::block_for(embassy_time::Duration::from_micros(us as u64));
+    #[cfg(not(feature = "time"))]
+    {
+        todo!();
+        // let freq = unsafe { crate::rcc::get_freqs() }.sys.to_hertz().unwrap().0 as u64;
+        // let us = us as u64;
+        // let cycles = freq * us / 1_000_000;
+        // cortex_m::asm::delay(cycles as u32);
+    }
+}
 
 /// Macro to bind interrupts to handlers.
 ///
@@ -147,3 +167,17 @@ macro_rules! bind_interrupts {
         $($t)*
     }
 }
+
+// Check README.md for details
+#[cfg(feature = "set-msplim")]
+global_asm!(
+    ".section .text._pre_init",
+    ".global __pre_init",
+    ".type __pre_init, %function",
+    ".thumb_func",
+    "__pre_init:",
+    "    ldr r0, =_stack_end",
+    "    msr MSPLIM, r0",
+    "    bx lr",
+    ".size __pre_init, . - __pre_init"
+);

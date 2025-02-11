@@ -1,6 +1,8 @@
 [target.thumbv8m.main-none-eabi]
+# unimplemented
 runner = 'probe-rs run --chip SF32LB52x'
-linker= "flip-link"
+# Cortex-M33 has MSPLIM, so we don't need flip-link
+# linker= "flip-link"
 
 [build]
 target = "thumbv8m.main-none-eabi"
