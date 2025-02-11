@@ -134,7 +134,7 @@ fn generate_rcc_impl(peripherals: &Peripherals, fieldsets: &BTreeMap<String, Fie
                 #[inline(always)]
                 fn rcc_reset() {
                     crate::pac::HPSYS_RCC.#rstr_reg_ident().modify(|w| w.#field_set_ident(true));
-                    while crate::pac::HPSYS_RCC.#rstr_reg_ident().read().#field_name_ident() == true { }; 
+                    while !crate::pac::HPSYS_RCC.#rstr_reg_ident().read().#field_name_ident() {}; 
                     crate::pac::HPSYS_RCC.#rstr_reg_ident().modify(|w| w.#field_set_ident(false));
                 }
             }
@@ -158,7 +158,7 @@ fn find_field_in_registers<'a>(
     None
 }
 
-pub fn generate_interrupt_mod(interrupts: &Interrupts) -> TokenStream {
+fn generate_interrupt_mod(interrupts: &Interrupts) -> TokenStream {
     let interrupt_names: Vec<_> = interrupts.hcpu
         .iter()
         .map(|int| {
@@ -173,7 +173,7 @@ pub fn generate_interrupt_mod(interrupts: &Interrupts) -> TokenStream {
     }
 }
 
-pub fn generate_peripherals_singleton(peripherals: &Peripherals) -> TokenStream {
+fn generate_peripherals_singleton(peripherals: &Peripherals) -> TokenStream {
     let peripheral_names: Vec<_> = peripherals.hcpu
         .iter()
         .map(|p| {
@@ -190,7 +190,7 @@ pub fn generate_peripherals_singleton(peripherals: &Peripherals) -> TokenStream 
         })
         .collect();
     
-    let dmac_channels: Vec<_> = (0..=8)
+    let dmac_channels: Vec<_> = (1..=8)
         .map(|i| {
             let channel_name = format!("DMAC_CH{}", i);
             quote::format_ident!("{}", channel_name)
