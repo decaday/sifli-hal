@@ -76,7 +76,6 @@ pub struct Field {
 
 #[derive(Clone, Debug, PartialEq, Serialize, Deserialize)]
 pub struct Interrupts {
-    #[serde(rename = "HCPU")]
     pub hcpu: Vec<Interrupt>,
 }
 
@@ -90,7 +89,6 @@ pub struct Interrupt {
 
 #[derive(Clone, Debug, Serialize, Deserialize)]
 pub struct Peripherals {
-    #[serde(rename = "HCPU")]
     pub hcpu: Vec<Peripheral>,
 }
 

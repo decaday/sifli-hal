@@ -1,4 +1,4 @@
-HCPU:
+hcpu:
 - pin: GPIO_A0
   functions:
   - function: GPIO_A0

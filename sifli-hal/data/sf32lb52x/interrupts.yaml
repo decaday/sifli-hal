@@ -1,4 +1,4 @@
-HCPU:
+hcpu:
   - name: LPTIM1   
     value: 46      
   - name: LPTIM2   
