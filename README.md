@@ -12,9 +12,9 @@ Rust Hardware Abstraction Layer (HAL) for SiFli MCUs.
 
 > [!WARNING]
 > 
-> This project is still in its early stages and is **not** yet usable.
+> This crate is a working-in-progress and not ready for production use.
 
-## Crates:
+## Crates
 | Github                                                       | crates.io                                       | docs.rs                                    | Support Status       |
 | ------------------------------------------------------------ | ----------------------------------------------- | ------------------------------------------ | -------------------- |
 | [sifli-hal](https://github.com/OpenSiFli/sifli-hal-rs/tree/main/sifli-hal) | [![Crates.io][hal-badge-version]][hal-cratesio] | [![docs.rs][hal-badge-docsrs]][hal-docsrs] | ![][badge-community] |
@@ -34,6 +34,57 @@ Rust Hardware Abstraction Layer (HAL) for SiFli MCUs.
 [pac-badge-license]: https://img.shields.io/crates/l/sifli-pac?style=for-the-badge
 [pac-badge-version]: https://img.shields.io/crates/v/sifli-pac?style=for-the-badge
 [pac-badge-docsrs]: https://img.shields.io/docsrs/sifli-pac?style=for-the-badge
+
+## Get Started
+
+### Build & Flash
+
+First, install [cargo-binutils](https://github.com/rust-embedded/cargo-binutils):
+
+```bash
+cargo install cargo-binutils
+rustup component add llvm-tools
+```
+
+Next, use `objcopy` to generate a `.bin` file:
+
+```bash
+cargo objcopy --bin blinky -- -O binary main.bin
+```
+
+Then, compile the [blink/no-os](https://github.com/OpenSiFli/SiFli-SDK/tree/main/example/get-started/blink/no-os) project in the SDK and copy the `main.bin` file into the build directory (e.g., `build_em-lb525_hcpu`), replacing the existing `main.bin` file.
+
+Make sure the new firmware size is smaller than the old one; otherwise, you may need to manually modify the `ftab` or use [sifli-flash-table](sifli-flash-table/README.md) to generate a new `ftab.bin`.
+
+Afterward, use the same programming method as with the SDK (for example, running `build_em-lb525_hcpu\uart_download.bat` or programming via JLink).
+
+### Debug
+
+By utilizing [SifliUsartServer](https://github.com/OpenSiFli/SiFli-SDK/tree/main/tools/SifliUsartServer) , you can generate a J-Link server, which then allows you to connect to it using Cortex-Debug within VS Code.
+
+```json
+"configurations": [
+        {
+            "cwd": "${workspaceFolder}",
+            "name": "C Debug",
+            "request": "attach",
+            "type": "cortex-debug",
+            "device": "Cortex-M33",
+            "runToEntryPoint": "entry",
+            "showDevDebugOutput": "none",
+            "servertype": "jlink",
+            "serverpath": "F:/Dev/Jlink/JLink_V812e/JLinkGDBServerCL.exe",
+            "ipAddress": "127.0.0.1:19025",
+            "interface": "swd",
+            // There's a slight issue with the SVD file format included in the SDK. 
+            // It's necessary to use the SVD files in sifli-pac.
+            "svdFile": "xxx/sifli-pac/svd/SF32LB52x.svd",
+            "executable": "examples/sf32lb52x/target/thumbv8m.main-none-eabi/debug/blinky"
+        },
+    ]
+```
+
+In certain HardFault scenarios, the Cortex-Debug connection may be interrupted. If this occurs, you might need to resort to J-Link Commander or alternative tools for debugging.
 
 ## License
 
