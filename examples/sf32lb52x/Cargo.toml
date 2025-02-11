@@ -6,10 +6,11 @@ edition = "2021"
 [dependencies]
 sifli-hal = { path = "../../sifli-hal", features = ["sf32lb52x", "defmt"] }
 
-cortex-m = { version = "0.7.7", features = ["critical-section-single-core"] }
-cortex-m-rt = "0.7.3"
+cortex-m = { version = "0.7.7", features = ["critical-section-single-core", "critical-section"] }
+cortex-m-rt = { version = "0.7.3", features = ["set-sp", "set-vtor"] }
 cortex-m-semihosting = { version = "0.5" }
 panic-probe = { version = "0.3", features = ["print-defmt"] }
+# panic-halt = "*"
 
 embassy-sync = { version = "0.6.2", features = ["defmt"] }
 embassy-executor = { version = "0.7.0", features = ["task-arena-size-32768", "arch-cortex-m", "executor-thread", "defmt"] }
