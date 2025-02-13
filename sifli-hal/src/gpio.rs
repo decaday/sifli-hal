@@ -10,6 +10,7 @@ use embassy_sync::waitqueue::AtomicWaker;
 
 use crate::interrupt::InterruptExt;
 use crate::pac::hpsys_gpio::regs;
+use crate::pac::hpsys_pinmux::vals;
 use crate::{interrupt, pac, peripherals, Peripheral};
 
 // TODO: move this const to _generated.rs
@@ -540,9 +541,9 @@ impl<'d> Flex<'d> {
     #[inline]
     pub fn set_pull(&mut self, pull: Pull) {
         let (pe, ps) = match pull {
-            Pull::None => (false, false),
-            Pull::Up => (true, true),
-            Pull::Down => (true, false),
+            Pull::None => (false, vals::Ps::Down),
+            Pull::Up => (true, vals::Ps::Up),
+            Pull::Down => (true, vals::Ps::Down),
         };
 
         let pin_id = self.pin.pin();
@@ -574,17 +575,55 @@ impl<'d> Flex<'d> {
     pub fn set_drive_strength(&mut self, strength: Drive) {
         // It would be best to merge ds1 and ds0, but currently chiptool does not 
         // seem to have such a transform?
-        todo!()
+        let (ds1, ds0) = match strength {
+            Drive::Drive0 => (false, false),
+            Drive::Drive1 => (false, true),
+            Drive::Drive2 => (true, false),
+            Drive::Drive3 => (true, true),
+        };
+        let pin_id = self.pin.pin();
+        match pin_id {
+            0..=38 => {
+                self.pin.pinmux().pad_pa0_38(pin_id as _).modify(|w| {
+                    w.set_ds0(ds0);
+                    w.set_ds1(ds1);
+                });
+            },
+            39..=42 => {
+                let ds = match strength {
+                    Drive::Drive0 => false,
+                    Drive::Drive1 => true,
+                    _ => {
+                        warn!("PA39-42 can only be set to Drive0 or Drive1");
+                        true
+                    },
+                };
+                self.pin.pinmux().pad_pa39_42((pin_id - 39) as _).modify(|w| {
+                    w.set_ds(ds);
+                });
+            },
+            43..=44 => {
+                self.pin.pinmux().pad_pa43_44((pin_id - 43) as _).modify(|w| {
+                    w.set_ds0(ds0);
+                    w.set_ds1(ds1);
+                });
+            },
+            _ => unreachable!(),
+        } 
     }
 
     /// Set the pin's slew rate.
     #[inline]
     pub fn set_slew_rate(&mut self, slew_rate: SlewRate) {
+        let sr = match slew_rate {
+            SlewRate::Fast => vals::Sr::Fast,
+            SlewRate::Slow => vals::Sr::Slow,
+        };
         let pin_id = self.pin.pin();
         match pin_id {
             0..=38 => {
                 self.pin.pinmux().pad_pa0_38(pin_id as _).modify(|w| {
-                    w.set_sr(slew_rate == SlewRate::Slow);
+                    w.set_sr(sr);
                 });
             },
             39..=42 => {
@@ -593,7 +632,7 @@ impl<'d> Flex<'d> {
             },
             43..=44 => {
                 self.pin.pinmux().pad_pa43_44((pin_id - 43) as _).modify(|w| {
-                    w.set_sr(slew_rate == SlewRate::Slow);
+                    w.set_sr(sr);
                 });
             },
             _ => unreachable!(),
@@ -604,21 +643,26 @@ impl<'d> Flex<'d> {
     /// if disabled, it will be a CMOS input.
     #[inline]
     pub fn set_schmitt(&mut self, enable: bool) {
+        let is = if enable {
+            vals::Is::Schmitt
+        } else {
+            vals::Is::Cmos
+        };
         let pin_id = self.pin.pin();
         match pin_id {
             0..=38 => {
                 self.pin.pinmux().pad_pa0_38(pin_id as _).modify(|w| {
-                    w.set_is(enable);
+                    w.set_is(is);
                 });
             },
             39..=42 => {
                 self.pin.pinmux().pad_pa39_42((pin_id - 39) as _).modify(|w| {
-                    w.set_is(enable);
+                    w.set_is(is);
                 });
             },
             43..=44 => {
                 self.pin.pinmux().pad_pa43_44((pin_id - 43) as _).modify(|w| {
-                    w.set_is(enable);
+                    w.set_is(is);
                 });
             },
             _ => unreachable!(),

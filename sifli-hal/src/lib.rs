@@ -1,5 +1,7 @@
 #![no_std]
 #![doc = include_str!("../README.md")]
+
+#[cfg(feature = "set-msplim")]
 use core::arch::global_asm;
 
 // This mod MUST go first, so that the others see its macros.
