@@ -1,26 +1,31 @@
 #![no_std]
 #![no_main]
 
-use cortex_m_rt::entry;
 use defmt::*;
 use defmt_rtt as _;
 use panic_probe as _;
 // use panic_halt as _;
+use embassy_time::Timer;
+use embassy_executor::Spawner;
 
 use sifli_hal;
 use sifli_hal::gpio;
 
-#[entry]
-fn main() -> ! {
+#[embassy_executor::main]
+async fn main(_spawner: Spawner) {
     let p = sifli_hal::init(Default::default());
-    let mut pin = gpio::Output::new(p.PA26, gpio::Level::Low);
+
+    // SF32LB52-DevKit-LCD LED pin
+    let mut led = gpio::Output::new(p.PA26, gpio::Level::Low);
     info!("Hello World!");
 
     loop {
-        info!("tick");
-        pin.set_high();
-        cortex_m::asm::delay(50_000_000);
-        pin.set_low();
-        cortex_m::asm::delay(50_000_000);
+        info!("led on!");
+        led.set_high();
+        Timer::after_secs(1).await;
+
+        info!("led off!");
+        led.set_low();
+        Timer::after_secs(1).await;
     }
 }
