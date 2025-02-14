@@ -9,7 +9,9 @@ pub(crate) mod fmt;
 
 pub mod rcc;
 pub mod gpio;
-// pub mod time_driver;
+pub mod timer;
+#[cfg(feature = "_time-driver")]
+pub mod time_driver;
 
 // Reexports
 pub use embassy_hal_internal::{into_ref, Peripheral, PeripheralRef};
@@ -58,15 +60,17 @@ pub fn init(_config: config::Config) -> Peripherals {
     system_init();
 
     // Do this first, so that it panics if user is calling `init` a second time
-        // before doing anything important.
+    // before doing anything important.
     let p = Peripherals::take();
 
     unsafe {
         // clocks::init(config.clocks);
-        // #[cfg(feature = "time-driver")]
-        // time_driver::init();
-        // dma::init();
+        #[cfg(feature = "_time-driver")]
+        time_driver::init();
+        
         gpio::init();
+
+        // dma::init();
     }
     p
 }

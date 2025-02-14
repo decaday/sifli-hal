@@ -55,7 +55,7 @@ Rust Hardware Abstraction Layer (HAL) and [Embassy](https://github.com/embassy-r
 
 - `set-msplim`: Set the MSPLIM register in `__pre_init`. This register must be set before the main function’s stack setup (since the bootloader may have already configured it to a different value), otherwise, it will cause a HardFault.
 
-- `time-driver-xxx`: Timer configuration for `time-driver`. It requires at least two capture/compare channels. For the `sf32lb52x hcpu`, only `atim1`, `btim1`, and `btim2` are available.
+- `time-driver-xxx`: Timer configuration for `time-driver`. It requires at least two capture/compare channels. For the `sf32lb52x hcpu`, only `atim1`(TODO), `gptim1`, and `gptim2` are available.
 
 ## License
 

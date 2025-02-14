@@ -40,6 +40,9 @@ name = "cfg-if"
 version = "1.0.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "baf1de4339761588bc0619e3cbc0120ee582ebb74b53b4efbf79117bd2da40fd"
+dependencies = [
+ "rustc-std-workspace-core",
+]
 
 [[package]]
 name = "cortex-m"
@@ -505,6 +508,12 @@ dependencies = [
 ]
 
 [[package]]
+name = "rustc-std-workspace-core"
+version = "1.0.1"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "aa9c45b374136f52f2d6311062c7146bff20fec063c3f5d46a410bd937746955"
+
+[[package]]
 name = "rustc_version"
 version = "0.2.3"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -571,6 +580,7 @@ dependencies = [
 name = "sifli-hal"
 version = "0.0.0"
 dependencies = [
+ "cfg-if",
  "cortex-m",
  "cortex-m-rt",
  "critical-section",
@@ -601,7 +611,6 @@ dependencies = [
 [[package]]
 name = "sifli-pac"
 version = "0.0.0"
-source = "git+https://github.com/OpenSiFli/sifli-pac#53f9a1c38a110e8c1f38eafb44178f6b7fccfbba"
 dependencies = [
  "cortex-m",
  "cortex-m-rt",
@@ -622,9 +631,9 @@ checksum = "7da8b5736845d9f2fcb837ea5d9e2628564b3b043a70948a3f0b778838c5fb4f"
 
 [[package]]
 name = "syn"
-version = "2.0.96"
+version = "2.0.98"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "d5d0adab1ae378d7f53bdebc67a39f1f151407ef230f0ce2883572f5d8985c80"
+checksum = "36147f1a48ae0ec2b5b3bc5b537d267457555a10dc06f3dbc8cb11ba3006d3b1"
 dependencies = [
  "proc-macro2",
  "quote",
