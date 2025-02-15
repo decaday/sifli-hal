@@ -10,6 +10,7 @@ pub(crate) mod fmt;
 pub mod rcc;
 pub mod gpio;
 pub mod timer;
+pub mod time;
 #[cfg(feature = "_time-driver")]
 pub mod time_driver;
 
