@@ -1,4 +1,4 @@
-// The code is copied from [chiptool](https://github.com/embassy-rs/chiptool/blob/main/src/ir.rs)
+// Some code in this file is copied from [chiptool](https://github.com/embassy-rs/chiptool/blob/main/src/ir.rs)
 // and is used under the MIT License with some simplifications and modifications.  
 // Since [chiptool](https://github.com/embassy-rs/chiptool/) is not published on 
 // [crates.io](https://crates.io), we cannot directly depend on it.
@@ -100,6 +100,7 @@ pub struct Peripheral {
     #[serde(default = "default_true", skip_serializing_if = "is_true")]
     pub enable_reset: bool,
     pub rcc_field: Option<String>,
+    pub clock: Option<String>,
     // #[serde(
     //     default,
     //     skip_serializing_if = "BTreeMap::is_empty",

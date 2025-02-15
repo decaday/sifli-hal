@@ -52,7 +52,7 @@ quote = "1.0.38"
 
 [features]
 # default = ["rt"]
-default = ["rt", "defmt", "time", "set-msplim", "sf32lb52x", "time-driver-gptim1"]
+default = ["rt", "defmt", "time", "set-msplim", "sf32lb52x", "time-driver-gptim2"]
 
 rt = ["sifli-pac/rt"]
 time = ["embassy-time"]
