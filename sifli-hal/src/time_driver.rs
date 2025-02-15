@@ -13,7 +13,7 @@ use sifli_pac::gptim::regs;
 use sifli_pac::atim::regs;
 
 use crate::interrupt::typelevel::Interrupt;
-use crate::rcc;
+use crate::rcc::{self, RccGetFreq};
 use crate::timer::Instance;
 use crate::{interrupt, peripherals};
 use crate::pac::tim_common::vals;
@@ -123,9 +123,7 @@ impl RtcDriver {
 
         rcc::enable_and_reset_with_cs::<T>(cs);
 
-        // TODO!!
-        let timer_freq = 18_000_000;
-        // let timer_freq = T::frequency().0;
+        let timer_freq = T::frequency().unwrap().0;
 
         r.cr1().modify(|w| w.set_cen(false));
         r.cnt().write(|w| w.set_cnt(0));

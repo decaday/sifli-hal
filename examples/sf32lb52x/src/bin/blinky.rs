@@ -18,7 +18,8 @@ async fn main(_spawner: Spawner) {
     // SF32LB52-DevKit-LCD LED pin
     let mut led = gpio::Output::new(p.PA26, gpio::Level::Low);
     info!("Hello World!");
-
+    sifli_hal::rcc::test_print_clocks();
+    
     loop {
         info!("led on!");
         led.set_high();
