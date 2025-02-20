@@ -10,6 +10,8 @@ pub(crate) mod fmt;
 pub mod rcc;
 pub mod gpio;
 pub mod timer;
+pub mod time;
+pub mod pmu;
 #[cfg(feature = "_time-driver")]
 pub mod time_driver;
 
@@ -20,43 +22,35 @@ pub use sifli_pac as pac;
 #[cfg(not(feature = "unstable-pac"))]
 pub(crate) use sifli_pac as pac;
 
-/// HAL configuration for RP.
+/// HAL configuration for SiFli
 pub mod config {
-    // use crate::clocks::ClockConfig;
+    use crate::rcc;
+    use crate::interrupt;
 
     /// HAL configuration passed when initializing.
     #[non_exhaustive]
     pub struct Config {
-        // /// Clock configuration.
-        // pub clocks: ClockConfig,
+        pub rcc: rcc::Config,
+        pub gpio1_it_priority: interrupt::Priority,
     }
 
     impl Default for Config {
         fn default() -> Self {
             Self {
-                // clocks: ClockConfig::crystal(12_000_000),
+                rcc: rcc::Config::new_keep(),
+                gpio1_it_priority: interrupt::Priority::P3,
             }
         }
     }
-
-    impl Config {
-        // /// Create a new configuration with the provided clock config.
-        // pub fn new(clocks: ClockConfig) -> Self {
-        //     Self { clocks }
-        // }
-
-        pub fn new() -> Self {
-            Self {}
-        }
-    }
 }
+pub use config::Config;
 
 /// Initialize the `sifli-hal` with the provided configuration.
 ///
 /// This returns the peripheral singletons that can be used for creating drivers.
 ///
 /// This should only be called once at startup, otherwise it panics.
-pub fn init(_config: config::Config) -> Peripherals {
+pub fn init(config: Config) -> Peripherals {
     system_init();
 
     // Do this first, so that it panics if user is calling `init` a second time
@@ -64,11 +58,13 @@ pub fn init(_config: config::Config) -> Peripherals {
     let p = Peripherals::take();
 
     unsafe {
-        // clocks::init(config.clocks);
+        // rcc::Config::apply()
+        config.rcc.apply();
+
         #[cfg(feature = "_time-driver")]
         time_driver::init();
         
-        gpio::init();
+        gpio::init(config.gpio1_it_priority);
 
         // dma::init();
     }
@@ -102,19 +98,19 @@ pub(crate) mod _generated {
 pub use _generated::interrupt;
 pub use _generated::{peripherals, Peripherals};
 
+/// Performs a busy-wait delay for a specified number of microseconds, using the `cortex-m::asm::delay` function.
+pub fn cortex_m_blocking_delay_us(us: u32) {
+    let freq = rcc::get_hclk_freq().unwrap().0 as u64;
+    let cycles = freq * us as u64 / 1_000_000;
+    cortex_m::asm::delay(cycles as u32);
+}
+
 /// Performs a busy-wait delay for a specified number of microseconds.
-#[allow(unused)]
-pub(crate) fn blocking_delay_us(us: u32) {
+pub fn blocking_delay_us(us: u32) {
     #[cfg(feature = "time")]
     embassy_time::block_for(embassy_time::Duration::from_micros(us as u64));
     #[cfg(not(feature = "time"))]
-    {
-        todo!();
-        // let freq = unsafe { crate::rcc::get_freqs() }.sys.to_hertz().unwrap().0 as u64;
-        // let us = us as u64;
-        // let cycles = freq * us / 1_000_000;
-        // cortex_m::asm::delay(cycles as u32);
-    }
+    cortex_m_blocking_delay_us(us);
 }
 
 /// Macro to bind interrupts to handlers.

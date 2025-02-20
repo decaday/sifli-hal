@@ -52,7 +52,7 @@ quote = "1.0.38"
 
 [features]
 # default = ["rt"]
-default = ["rt", "defmt", "time", "set-msplim", "sf32lb52x", "time-driver-gptim1"]
+default = ["rt", "defmt", "time", "set-msplim", "sf32lb52x", "time-driver-gptim2"]
 
 rt = ["sifli-pac/rt"]
 time = ["embassy-time"]
@@ -82,3 +82,7 @@ time-driver-gptim2 = ["_time-driver-gptim"]
 _time-driver-atim = ["_time-driver"]
 _time-driver-gptim = ["_time-driver"]
 _time-driver = ["embassy-time-driver", "embassy-time-queue-utils"]
+
+## Enable this feature to disable the overclocking check.
+## DO NOT ENABLE THIS FEATURE UNLESS YOU KNOW WHAT YOU'RE DOING.
+unchecked-overclocking = []

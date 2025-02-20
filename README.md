@@ -66,18 +66,16 @@ By utilizing [SifliUsartServer](https://github.com/OpenSiFli/SiFli-SDK/tree/main
 "configurations": [
         {
             "cwd": "${workspaceFolder}",
-            "name": "C Debug",
+            "name": "Cortex Debug",
             "request": "attach",
             "type": "cortex-debug",
             "device": "Cortex-M33",
             "runToEntryPoint": "entry",
             "showDevDebugOutput": "none",
             "servertype": "jlink",
-            "serverpath": "F:/Dev/Jlink/JLink_V812e/JLinkGDBServerCL.exe",
+            "serverpath": "xxx/Dev/Jlink/JLink_V812e/JLinkGDBServerCL.exe",
             "ipAddress": "127.0.0.1:19025",
             "interface": "swd",
-            // There's a slight issue with the SVD file format included in the SDK. 
-            // It's necessary to use the SVD files in sifli-pac.
             "svdFile": "xxx/sifli-pac/svd/SF32LB52x.svd",
             "executable": "examples/sf32lb52x/target/thumbv8m.main-none-eabi/debug/blinky"
         },

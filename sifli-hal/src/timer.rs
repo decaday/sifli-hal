@@ -2,7 +2,7 @@ use embassy_hal_internal::Peripheral;
 // use embassy_sync::waitqueue::AtomicWaker;
 
 use crate::interrupt;
-use crate::rcc::SealedRccPeripheral;
+use crate::rcc::SealedRccEnableReset;
 
 /// Timer channel.
 #[derive(Clone, Copy)]
@@ -59,7 +59,7 @@ pub enum TimerBits {
 //     }
 // }
 
-trait SealedInstance: SealedRccPeripheral + Peripheral<P = Self> {
+trait SealedInstance: SealedRccEnableReset + Peripheral<P = Self> {
     // /// Async state for this timer
     // fn state() -> &'static State;
 }

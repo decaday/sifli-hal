@@ -23,21 +23,24 @@ Rust Hardware Abstraction Layer (HAL) and [Embassy](https://github.com/embassy-r
 
 [Get Started](../README.md#get-started)
 
-### Status
 
-| Family    | SF32LB52x |
-| --------- | --------- |
-| Embassy   |           |
-| RCC       |           |
-| GPIO      | ✅         |
-| INTERRUPT | ✅         |
-| DMA       |           |
-| USART     |           |
-| I2C       |           |
-| SPI       |           |
-| Bluetooth |           |
-| USB       |           |
-| ePicasso  |           |
+
+## Status
+
+| Family    | SF32LB52x        |
+| --------- | ---------------- |
+| Embassy   | ✅+               |
+| RCC       | ✅                |
+| GPIO      | ✅                |
+| INTERRUPT | ✅                |
+| PMU       | DVFS switch only |
+| DMA       |                  |
+| USART     |                  |
+| I2C       |                  |
+| SPI       |                  |
+| Bluetooth |                  |
+| USB       |                  |
+| ePicasso  |                  |
 
 - ✅ : Implemented
 - Blank : Not implemented
@@ -49,13 +52,17 @@ Rust Hardware Abstraction Layer (HAL) and [Embassy](https://github.com/embassy-r
 
 - `defmt` or `log`: Debug log output.
 
-  TODO: Currently, `probe-rs` does not support `sf32`. I tried using `defmt` with Segger RTT but couldn't see the log output.
+  TODO: Currently, `probe-rs` does not support `sf32` (WIP). I tried using `defmt` with Segger RTT but couldn't see the log output.
 
 - `sf32lb52x`: Target chip selection. Currently, only `sf32lb52x` is supported.
 
 - `set-msplim`: Set the MSPLIM register in `__pre_init`. This register must be set before the main function’s stack setup (since the bootloader may have already configured it to a different value), otherwise, it will cause a HardFault.
 
-- `time-driver-xxx`: Timer configuration for `time-driver`. It requires at least two capture/compare channels. For the `sf32lb52x hcpu`, only `atim1`(TODO), `gptim1`, and `gptim2` are available.
+  This feature will be removed after [cortex-m-rt #580](https://github.com/rust-embedded/cortex-m/pull/580)  is released.
+
+- `time-driver-xxx`: Timer configuration for `time-driver`. It requires at least two capture/compare channels. For the `sf32lb52x hcpu`, only `atim1` (TODO: [#5](https://github.com/OpenSiFli/sifli-hal-rs/issues/5)), `gptim1`, and `gptim2` are available.
+
+- `unchecked-overclocking`: Enable this feature to disable the overclocking check. DO NOT ENABLE THIS FEATURE UNLESS YOU KNOW WHAT YOU'RE DOING.
 
 ## License
 

@@ -172,10 +172,10 @@ pub enum InterruptTrigger {
     AnyEdge,
 }
 
-pub(crate) unsafe fn init() {
+pub(crate) unsafe fn init(gpio1_it_priority: interrupt::Priority) {
     unsafe {
         interrupt::GPIO1.disable();
-        interrupt::GPIO1.set_priority(interrupt::Priority::P3);
+        interrupt::GPIO1.set_priority(gpio1_it_priority);
         interrupt::GPIO1.enable();
     }
     crate::rcc::enable_and_reset::<peripherals::HPSYS_GPIO>();
@@ -514,7 +514,7 @@ impl<'d> Flex<'d> {
         }
 
         // WAIT_ISR_DISABLED
-        // crate::blocking_delay_us(1);
+        crate::cortex_m_blocking_delay_us(1);
 
         if pin.pin.pin() % 32 == 0 {
             pin.pin.gpio().isr0().write_value(sifli_pac::hpsys_gpio::regs::Isr0(pin.bit()));

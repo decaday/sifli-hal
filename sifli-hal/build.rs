@@ -31,6 +31,20 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
         .unwrap()
         .to_ascii_lowercase();
 
+    let _time_driver_peripheral = match env::vars()
+        .map(|(key, _)| key)
+        .filter(|x| x.starts_with("CARGO_FEATURE_TIME_DRIVER_"))
+        .get_one()
+    {
+        Ok(x) => Some(
+            x.strip_prefix("CARGO_FEATURE_TIME_DRIVER_")
+                .unwrap()
+                .to_ascii_uppercase()
+        ),
+        Err(GetOneError::None) => None,
+        Err(GetOneError::Multiple) => panic!("Multiple time-driver-xx Cargo features enabled"),
+    };
+
     println!("cargo:rerun-if-changed=data/{}", chip_name);
     let data_dir = Path::new("data").join(chip_name);
 
@@ -98,7 +112,6 @@ fn generate_rcc_impl(peripherals: &Peripherals, fieldsets: &BTreeMap<String, Fie
         if !peripheral.enable_reset {
             continue;
         }
-
         // Get field name (prefer rcc_field if available)
         let field_name = &peripheral.rcc_field.clone()
             .unwrap_or(peripheral.name.clone()).to_lowercase();
@@ -118,9 +131,9 @@ fn generate_rcc_impl(peripherals: &Peripherals, fieldsets: &BTreeMap<String, Fie
         let enr_reg_ident = format_ident!("{}", enr_reg.to_lowercase());
         let rstr_reg_ident = format_ident!("{}", rstr_reg.to_lowercase());
 
-        let peripheral_name = format_ident!("{}", peripheral.name);
+        let peripheral_name_ident = format_ident!("{}", peripheral.name);
         let impl_tokens = quote! {
-            impl crate::rcc::SealedRccPeripheral for crate::peripherals::#peripheral_name {
+            impl crate::rcc::SealedRccEnableReset for crate::peripherals::#peripheral_name_ident {
                 #[inline(always)]
                 fn rcc_enable() {
                     crate::pac::HPSYS_RCC.#enr_reg_ident().modify(|w| w.#field_set_ident(true));
@@ -138,11 +151,28 @@ fn generate_rcc_impl(peripherals: &Peripherals, fieldsets: &BTreeMap<String, Fie
                     crate::pac::HPSYS_RCC.#rstr_reg_ident().modify(|w| w.#field_set_ident(false));
                 }
             }
+            impl crate::rcc::RccEnableReset for crate::peripherals::#peripheral_name_ident {}
         };
-
         implementations.extend(impl_tokens);
     }
 
+    implementations.extend(quote! {use crate::time::Hertz;});
+    for peripheral in &peripherals.hcpu {
+        if let Some(clock) = peripheral.clock.clone() {
+            let clock_fn_ident = format_ident!("get_{}_freq", clock);
+            let peripheral_name_ident = format_ident!("{}", peripheral.name);
+            let impl_tokens = quote! {
+                impl crate::rcc::SealedRccGetFreq for crate::peripherals::#peripheral_name_ident {
+                    fn get_freq() -> Option<Hertz> {
+                        crate::rcc::#clock_fn_ident()
+                    }
+                }
+                impl crate::rcc::RccGetFreq for crate::peripherals::#peripheral_name_ident {}
+            };
+
+            implementations.extend(impl_tokens);
+        }
+    }
     implementations
 }
 
