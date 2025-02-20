@@ -9,12 +9,14 @@ pub use crate::pac::hpsys_rcc::vals::{
 };
 
 // all clocks:
-// clk_sys, clk_peri, clk_aud_pll
+// clk_sys, clk_peri, clk_peri_div2
+// clk_aud_pll, aud_pll_div16
 // hxt48, hrc48
 // clk_dll1, clk_dll2
+// clk_rtc(TODO), clk_wdt(TODO)
 // hclk, pclk1, pclk2
 // clk_usb
-// TODO: lxt32, lrc32, lrc10, clk_wdt
+// TODO: lxt32, lrc32, lrc10
 
 /// clk_sys
 pub fn get_clk_sys_freq() -> Option<Hertz> {
@@ -101,6 +103,18 @@ pub fn get_clk_usb_freq() -> Option<Hertz> {
 
 pub fn get_clk_aud_pll_freq() -> Option<Hertz> {
     Some(Hertz(49_152_000))
+}
+
+pub fn get_clk_aud_pll_div16_freq() -> Option<Hertz> {
+    Some(Hertz(49_152_000 / 16))
+}
+
+pub fn get_clk_wdt_freq() -> Option<Hertz> {
+    todo!()
+}
+
+pub fn get_clk_rtc_freq() -> Option<Hertz> {
+    todo!()
 }
 
 pub fn test_print_clocks() {

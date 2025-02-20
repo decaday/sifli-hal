@@ -8,6 +8,7 @@ pub use clock_configure::*;
 
 use crate::time::Hertz;
 
+// TODO: should we split this into `RccEnable` and `RccReset` ?
 pub(crate) trait SealedRccEnableReset {
     fn rcc_enable();
 

@@ -11,7 +11,8 @@ hcpu:
   - name: ATIM1
     clock: clk_peri
   - name: AUDPRC
-    clock: clk_peri
+    # TODO: clock select
+    clock: clk_aud_pll
   - name: EZIP1
     clock: clk_peri
   - name: EPIC
@@ -20,7 +21,8 @@ hcpu:
   - name: LCDC1
     clock: clk_peri
   - name: I2S1
-    clock: clk_peri
+    # TODO: clock select
+    clock: clk_aud_pll
   - name: HPSYS_CFG
     enable_reset: false
     clock: clk_peri
@@ -31,9 +33,11 @@ hcpu:
   - name: TRNG
     clock: clk_peri
   - name: MPI1
-    clock: clk_peri
+    # TODO: clock select
+    clock: clk_dll2
   - name: MPI2
-    clock: clk_peri
+    # TODO: clock select
+    clock: clk_dll2
   - name: SDMMC1
     clock: clk_peri
   - name: CRC1
@@ -41,9 +45,11 @@ hcpu:
   - name: PTC1
     clock: clk_peri
   - name: DMAC1
-    clock: clk_peri
+    clock: hclk
   - name: USART1
     clock: clk_peri
+    # TODO: USART1 can be reset but cant be disabled
+    enable_reset: false
   - name: USART2
     clock: clk_peri
   - name: USART3
@@ -51,7 +57,8 @@ hcpu:
   - name: GPADC
     clock: clk_peri
   - name: AUDCODEC
-    clock: clk_peri
+    # TODO: clock select
+    clock: clk_aud_pll
   - name: TSEN
     clock: clk_peri
   - name: GPTIM1
@@ -60,12 +67,14 @@ hcpu:
     clock: pclk1
   - name: WDT1
     clock: clk_peri
+    enable_reset: false
   - name: SPI1
     clock: clk_peri
   - name: SPI2
     clock: clk_peri
   - name: PDM1
-    clock: clk_peri
+    # TODO: clock select
+    clock: clk_aud_pll_div16
   - name: I2C1
     clock: clk_peri
   - name: I2C2
@@ -83,14 +92,16 @@ hcpu:
     clock: clk_peri_div2
   - name: HPSYS_AON
     enable_reset: false
-    clock: pclk2
+    clock: clk_wdt
   - name: LPTIM1
     enable_reset: false
-    clock: clk_peri
+    clock: clk_rtc
   - name: LPTIM2
     enable_reset: false
-    clock: clk_peri
+    clock: clk_rtc
   - name: PMUC
     enable_reset: false
+    clock: clk_wdt
   - name: IWDT
     enable_reset: false
+    clock: clk_wdt
