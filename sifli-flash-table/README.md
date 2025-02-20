@@ -29,10 +29,8 @@ In [lib.rs](src/lib.rs), there is a test called `test_ptab_ftab_conversion`, whi
 
 ## TODO
 
-- Test on actual chips
 - Use real user code and bootloader firmware size values
 - Write automated tests for more boards
-- Confirm if `_init` and `_fini` are invalid
 - Verify if addresses starting with `0x6xxx_xxxx` are use
 
 ## License
