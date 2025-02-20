@@ -11,6 +11,7 @@ pub mod rcc;
 pub mod gpio;
 pub mod timer;
 pub mod time;
+pub mod pmu;
 #[cfg(feature = "_time-driver")]
 pub mod time_driver;
 
