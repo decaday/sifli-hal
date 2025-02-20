@@ -58,8 +58,8 @@ pub fn init(config: Config) -> Peripherals {
     let p = Peripherals::take();
 
     unsafe {
-        // rcc::Config::apply() is not ready yet
-        // config.rcc.apply();
+        // rcc::Config::apply()
+        config.rcc.apply();
 
         #[cfg(feature = "_time-driver")]
         time_driver::init();

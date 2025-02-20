@@ -82,3 +82,7 @@ time-driver-gptim2 = ["_time-driver-gptim"]
 _time-driver-atim = ["_time-driver"]
 _time-driver-gptim = ["_time-driver"]
 _time-driver = ["embassy-time-driver", "embassy-time-queue-utils"]
+
+## Enable this feature to disable the overclocking check.
+## DO NOT ENABLE THIS FEATURE UNLESS YOU KNOW WHAT YOU'RE DOING.
+unchecked-overclocking = []
