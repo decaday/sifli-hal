@@ -77,7 +77,7 @@ impl Ftab {
 
         self.structure.imgs.lcpu.length = 0xFFFFFFFF;
         // TODO: real size
-        self.structure.imgs.secondary_bl.length = 0x80000;
+        self.structure.imgs.secondary_bl.length = 0xFFFF; // 64K
         self.structure.imgs.secondary_bl.blksize = 512;
         self.structure.imgs.secondary_bl.flags = DFU_FLAG_AUTO;
         self.structure.imgs.primary_bl_patch.length = 0xFFFFFFFF;
