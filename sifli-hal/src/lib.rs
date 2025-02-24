@@ -12,6 +12,7 @@ pub mod gpio;
 pub mod timer;
 pub mod time;
 pub mod pmu;
+pub mod usart;
 #[cfg(feature = "_time-driver")]
 pub mod time_driver;
 
@@ -58,7 +59,6 @@ pub fn init(config: Config) -> Peripherals {
     let p = Peripherals::take();
 
     unsafe {
-        // rcc::Config::apply()
         config.rcc.apply();
 
         #[cfg(feature = "_time-driver")]
