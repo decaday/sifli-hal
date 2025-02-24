@@ -197,18 +197,6 @@ pub struct Config {
     #[cfg(not(usart_v1))]
     pub assume_noise_free: bool,
 
-    /// Set this to true to swap the RX and TX pins.
-    #[cfg(any(usart_v3, usart_v4))]
-    pub swap_rx_tx: bool,
-
-    /// Set this to true to invert TX pin signal values (V<sub>DD</sub> = 0/mark, Gnd = 1/idle).
-    #[cfg(any(usart_v3, usart_v4))]
-    pub invert_tx: bool,
-
-    /// Set this to true to invert RX pin signal values (V<sub>DD</sub> = 0/mark, Gnd = 1/idle).
-    #[cfg(any(usart_v3, usart_v4))]
-    pub invert_rx: bool,
-
     /// Set the pull configuration for the RX pin.
     pub rx_pull: Pull,
 
@@ -218,18 +206,10 @@ pub struct Config {
 
 impl Config {
     fn tx_af(&self) -> AfType {
-        #[cfg(any(usart_v3, usart_v4))]
-        if self.swap_rx_tx {
-            return AfType::input(self.rx_pull);
-        };
         AfType::output(OutputType::PushPull, Speed::Medium)
     }
 
     fn rx_af(&self) -> AfType {
-        #[cfg(any(usart_v3, usart_v4))]
-        if self.swap_rx_tx {
-            return AfType::output(OutputType::PushPull, Speed::Medium);
-        };
         AfType::input(self.rx_pull)
     }
 }
@@ -245,12 +225,6 @@ impl Default for Config {
             detect_previous_overrun: false,
             #[cfg(not(usart_v1))]
             assume_noise_free: false,
-            #[cfg(any(usart_v3, usart_v4))]
-            swap_rx_tx: false,
-            #[cfg(any(usart_v3, usart_v4))]
-            invert_tx: false,
-            #[cfg(any(usart_v3, usart_v4))]
-            invert_rx: false,
             rx_pull: Pull::None,
             duplex: Duplex::Full,
         }
@@ -338,8 +312,7 @@ pub struct UartTx<'d, M: Mode> {
     kernel_clock: Hertz,
     tx: Option<PeripheralRef<'d, AnyPin>>,
     cts: Option<PeripheralRef<'d, AnyPin>>,
-    de: Option<PeripheralRef<'d, AnyPin>>,
-    tx_dma: Option<ChannelAndRequest<'d>>,
+    // tx_dma: Option<ChannelAndRequest<'d>>,
     duplex: Duplex,
     _phantom: PhantomData<M>,
 }
@@ -510,8 +483,7 @@ impl<'d, M: Mode> UartTx<'d, M> {
             kernel_clock: T::frequency(),
             tx,
             cts,
-            de: None,
-            tx_dma,
+            // tx_dma,
             duplex: config.duplex,
             _phantom: PhantomData,
         };
@@ -1063,8 +1035,7 @@ impl<'d, M: Mode> Drop for UartTx<'d, M> {
     fn drop(&mut self) {
         self.tx.as_ref().map(|x| x.set_as_disconnected());
         self.cts.as_ref().map(|x| x.set_as_disconnected());
-        self.de.as_ref().map(|x| x.set_as_disconnected());
-        drop_tx_rx(self.info, self.state);
+        drop_tx_rx::<T>(self.state);
     }
 }
 
@@ -1345,10 +1316,6 @@ impl<'d> Uart<'d, Blocking> {
         readback: HalfDuplexReadback,
         half_duplex: HalfDuplexConfig,
     ) -> Result<Self, ConfigError> {
-        #[cfg(not(any(usart_v1, usart_v2)))]
-        {
-            config.swap_rx_tx = false;
-        }
         config.duplex = Duplex::Half(readback);
 
         Self::new_inner(
@@ -1382,7 +1349,6 @@ impl<'d> Uart<'d, Blocking> {
         readback: HalfDuplexReadback,
         half_duplex: HalfDuplexConfig,
     ) -> Result<Self, ConfigError> {
-        config.swap_rx_tx = true;
         config.duplex = Duplex::Half(readback);
 
         Self::new_inner(
@@ -1406,9 +1372,8 @@ impl<'d, M: Mode> Uart<'d, M> {
         tx: Option<PeripheralRef<'d, AnyPin>>,
         rts: Option<PeripheralRef<'d, AnyPin>>,
         cts: Option<PeripheralRef<'d, AnyPin>>,
-        de: Option<PeripheralRef<'d, AnyPin>>,
-        tx_dma: Option<ChannelAndRequest<'d>>,
-        rx_dma: Option<ChannelAndRequest<'d>>,
+        // tx_dma: Option<ChannelAndRequest<'d>>,
+        // rx_dma: Option<ChannelAndRequest<'d>>,
         config: Config,
     ) -> Result<Self, ConfigError> {
         let info = T::info();
@@ -1423,8 +1388,7 @@ impl<'d, M: Mode> Uart<'d, M> {
                 kernel_clock,
                 tx,
                 cts,
-                de,
-                tx_dma,
+                // tx_dma,
                 duplex: config.duplex,
             },
             rx: UartRx {
@@ -1435,9 +1399,8 @@ impl<'d, M: Mode> Uart<'d, M> {
                 rx,
                 rts,
                 rx_dma,
+                // rx_dma,
                 detect_previous_overrun: config.detect_previous_overrun,
-                #[cfg(any(usart_v1, usart_v2))]
-                buffered_sr: stm32_metapac::usart::regs::Sr(0),
             },
         };
         this.enable_and_configure(&config)?;
@@ -1454,8 +1417,6 @@ impl<'d, M: Mode> Uart<'d, M> {
         info.regs.cr3().write(|w| {
             w.set_rtse(self.rx.rts.is_some());
             w.set_ctse(self.tx.cts.is_some());
-            #[cfg(not(any(usart_v1, usart_v2)))]
-            w.set_dem(self.tx.de.is_some());
         });
         configure(info, self.rx.kernel_clock, config, true, true)?;
 
@@ -1693,13 +1654,6 @@ fn configure(
             StopBits::STOP1P5 => vals::Stop::STOP1P5,
             StopBits::STOP2 => vals::Stop::STOP2,
         });
-
-        #[cfg(any(usart_v3, usart_v4))]
-        {
-            w.set_txinv(config.invert_tx);
-            w.set_rxinv(config.invert_rx);
-            w.set_swap(config.swap_rx_tx);
-        }
     });
 
     r.cr3().modify(|w| {

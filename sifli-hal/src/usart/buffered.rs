@@ -13,8 +13,6 @@ use embassy_hal_internal::atomic_ring_buffer::RingBuffer;
 use embassy_hal_internal::{Peripheral, PeripheralRef};
 use embassy_sync::waitqueue::AtomicWaker;
 
-#[cfg(not(any(usart_v1, usart_v2)))]
-use super::DePin;
 use super::{
     clear_interrupt_flags, configure, half_duplex_set_rx_tx_before_write, rdr, reconfigure, send_break, set_baudrate,
     sr, tdr, Config, ConfigError, CtsPin, Duplex, Error, HalfDuplexConfig, HalfDuplexReadback, Info, Instance, Regs,
@@ -165,7 +163,6 @@ pub struct BufferedUartTx<'d> {
     kernel_clock: Hertz,
     tx: Option<PeripheralRef<'d, AnyPin>>,
     cts: Option<PeripheralRef<'d, AnyPin>>,
-    de: Option<PeripheralRef<'d, AnyPin>>,
     is_borrowed: bool,
 }
 
@@ -250,31 +247,6 @@ impl<'d> BufferedUart<'d> {
             new_pin!(tx, AfType::output(OutputType::PushPull, Speed::Medium)),
             new_pin!(rts, AfType::output(OutputType::PushPull, Speed::Medium)),
             new_pin!(cts, AfType::input(Pull::None)),
-            None,
-            tx_buffer,
-            rx_buffer,
-            config,
-        )
-    }
-
-    /// Create a new bidirectional buffered UART driver with only the RTS pin as the DE pin
-    pub fn new_with_rts_as_de<T: Instance>(
-        peri: impl Peripheral<P = T> + 'd,
-        _irq: impl interrupt::typelevel::Binding<T::Interrupt, InterruptHandler<T>> + 'd,
-        rx: impl Peripheral<P = impl RxPin<T>> + 'd,
-        tx: impl Peripheral<P = impl TxPin<T>> + 'd,
-        rts: impl Peripheral<P = impl RtsPin<T>> + 'd,
-        tx_buffer: &'d mut [u8],
-        rx_buffer: &'d mut [u8],
-        config: Config,
-    ) -> Result<Self, ConfigError> {
-        Self::new_inner(
-            peri,
-            new_pin!(rx, AfType::input(Pull::None)),
-            new_pin!(tx, AfType::output(OutputType::PushPull, Speed::Medium)),
-            None,
-            None,
-            new_pin!(rts, AfType::input(Pull::None)), // RTS mapped used as DE
             tx_buffer,
             rx_buffer,
             config,
@@ -298,32 +270,6 @@ impl<'d> BufferedUart<'d> {
             new_pin!(tx, AfType::output(OutputType::PushPull, Speed::Medium)),
             new_pin!(rts, AfType::input(Pull::None)),
             None, // no CTS
-            None, // no DE
-            tx_buffer,
-            rx_buffer,
-            config,
-        )
-    }
-
-    /// Create a new bidirectional buffered UART driver with a driver-enable pin
-    #[cfg(not(any(usart_v1, usart_v2)))]
-    pub fn new_with_de<T: Instance>(
-        peri: impl Peripheral<P = T> + 'd,
-        _irq: impl interrupt::typelevel::Binding<T::Interrupt, InterruptHandler<T>> + 'd,
-        rx: impl Peripheral<P = impl RxPin<T>> + 'd,
-        tx: impl Peripheral<P = impl TxPin<T>> + 'd,
-        de: impl Peripheral<P = impl DePin<T>> + 'd,
-        tx_buffer: &'d mut [u8],
-        rx_buffer: &'d mut [u8],
-        config: Config,
-    ) -> Result<Self, ConfigError> {
-        Self::new_inner(
-            peri,
-            new_pin!(rx, AfType::input(config.rx_pull)),
-            new_pin!(tx, AfType::output(OutputType::PushPull, Speed::Medium)),
-            None,
-            None,
-            new_pin!(de, AfType::output(OutputType::PushPull, Speed::Medium)),
             tx_buffer,
             rx_buffer,
             config,
@@ -352,10 +298,6 @@ impl<'d> BufferedUart<'d> {
         readback: HalfDuplexReadback,
         half_duplex: HalfDuplexConfig,
     ) -> Result<Self, ConfigError> {
-        #[cfg(not(any(usart_v1, usart_v2)))]
-        {
-            config.swap_rx_tx = false;
-        }
         config.duplex = Duplex::Half(readback);
 
         Self::new_inner(
@@ -392,7 +334,6 @@ impl<'d> BufferedUart<'d> {
         readback: HalfDuplexReadback,
         half_duplex: HalfDuplexConfig,
     ) -> Result<Self, ConfigError> {
-        config.swap_rx_tx = true;
         config.duplex = Duplex::Half(readback);
 
         Self::new_inner(
@@ -414,7 +355,6 @@ impl<'d> BufferedUart<'d> {
         tx: Option<PeripheralRef<'d, AnyPin>>,
         rts: Option<PeripheralRef<'d, AnyPin>>,
         cts: Option<PeripheralRef<'d, AnyPin>>,
-        de: Option<PeripheralRef<'d, AnyPin>>,
         tx_buffer: &'d mut [u8],
         rx_buffer: &'d mut [u8],
         config: Config,
@@ -443,7 +383,6 @@ impl<'d> BufferedUart<'d> {
                 kernel_clock,
                 tx,
                 cts,
-                de,
                 is_borrowed: false,
             },
         };
@@ -471,8 +410,6 @@ impl<'d> BufferedUart<'d> {
         info.regs.cr3().write(|w| {
             w.set_rtse(self.rx.rts.is_some());
             w.set_ctse(self.tx.cts.is_some());
-            #[cfg(not(any(usart_v1, usart_v2)))]
-            w.set_dem(self.tx.de.is_some());
             w.set_hdsel(config.duplex.is_half());
         });
         configure(info, self.rx.kernel_clock, &config, true, true)?;
@@ -511,7 +448,6 @@ impl<'d> BufferedUart<'d> {
                 kernel_clock: self.tx.kernel_clock,
                 tx: self.tx.tx.as_mut().map(PeripheralRef::reborrow),
                 cts: self.tx.cts.as_mut().map(PeripheralRef::reborrow),
-                de: self.tx.de.as_mut().map(PeripheralRef::reborrow),
                 is_borrowed: true,
             },
             BufferedUartRx {
@@ -781,8 +717,7 @@ impl<'d> Drop for BufferedUartTx<'d> {
 
             self.tx.as_ref().map(|x| x.set_as_disconnected());
             self.cts.as_ref().map(|x| x.set_as_disconnected());
-            self.de.as_ref().map(|x| x.set_as_disconnected());
-            drop_tx_rx(self.info, state);
+            drop_tx_rx::<T>(state);
         }
     }
 }
