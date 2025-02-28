@@ -5,11 +5,13 @@ on:
     branches: [ "main" ]
     paths:
       - 'sifli-hal/**'
+      - 'examples/**'
       - '.github/workflows/build-hal.yml'
   pull_request:
     branches: [ "main" ]
     paths:
       - 'sifli-hal/**'
+      - 'examples/**'
       - '.github/workflows/build-hal.yml'
 
 env:

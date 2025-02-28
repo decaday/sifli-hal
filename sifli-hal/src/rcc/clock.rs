@@ -50,6 +50,10 @@ pub fn get_hclk_freq() -> Option<Hertz> {
     Some(clk_sys / HPSYS_RCC.cfgr().read().hdiv())
 }
 
+pub fn get_hclk_div() -> u8 {
+    HPSYS_RCC.cfgr().read().hdiv()
+}
+
 pub fn get_pclk1_freq() -> Option<Hertz> {
     let hclk = get_hclk_freq()?;
     Some(hclk / (1 << HPSYS_RCC.cfgr().read().pdiv1()) as u32)
