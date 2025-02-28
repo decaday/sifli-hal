@@ -21,6 +21,7 @@ use sifli_hal::rcc::{self, ConfigOption, DllConfig};
 async fn main(_spawner: Spawner) {
     info!("Hello World!");
     let mut config = sifli_hal::Config::default();
+    // 240MHz Dll1 Freq = (stg + 1) * 24MHz
     config.rcc.dll1 = ConfigOption::Update(DllConfig { enable: true, stg: 9, div2: false });
     let p = sifli_hal::init(config);
 

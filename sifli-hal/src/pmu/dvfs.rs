@@ -116,11 +116,11 @@ pub(crate) fn config_hcpu_dvfs<F>(
             config_clock();
         },
         (D0, D1) | (D1, D0) => {
+            // TODO:
             // switch between different D mode
             // Why?
             // switch_hcpu_dvfs_d2s(target_dvfs_mode, todo_set_to_144);
-            // switch_hcpu_dvfs_s2d(target_dvfs_mode, config_clock);
-            todo!()
+            switch_hcpu_dvfs_s2d(target_dvfs_mode, config_clock);
         },
     }
 }

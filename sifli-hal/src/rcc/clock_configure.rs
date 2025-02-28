@@ -5,7 +5,7 @@ use super::{ClkSysSel, ClkPeriSel, UsbSel, TickSel};
 
 /// Represents a configuration value that can either be updated with a new value
 /// or kept unchanged from its previous state.
-#[derive(Debug, Clone, PartialEq)]
+#[derive(Debug, Clone, Copy, PartialEq)]
 pub enum ConfigOption<T> {
     /// Update the configuration with a new value
     Update(T),
@@ -183,13 +183,12 @@ impl Config {
         }
 
         // Configure system clock
-        if !self.hclk_is_keep() {
+        if self.hclk_is_update() {
             let hclk_freq = self.get_final_hclk_freq().unwrap();
             let current_hclk_freq = super::get_hclk_freq().unwrap();
 
             let config_hclk_fn = || self.config_hclk();
             crate::pmu::dvfs::config_hcpu_dvfs(current_hclk_freq, hclk_freq, config_hclk_fn); 
-            
             if ConfigOption::Update(ClkSysSel::Dll1) != self.clk_sys_sel {
                 self.config_dll1();
             }
@@ -332,47 +331,40 @@ impl Config {
             ConfigOption::Update(ClkSysSel::Hrc48) => Some(Hertz(48_000_000)),
             ConfigOption::Update(ClkSysSel::Dll1) => self.get_final_dll1_freq(),
             ConfigOption::Update(ClkSysSel::Dbl96) => todo!(),
-            ConfigOption::Keep => None,
+            ConfigOption::Keep => super::get_clk_sys_freq(),
         }
     }
 
     fn get_final_hclk_freq(&self) -> Option<Hertz> {
-        if self.hclk_is_keep() {
-            self.get_final_hclk_freq()
+        if self.hclk_is_update() {
+            let hclk_div = match self.hclk_div {
+                ConfigOption::Update(div) => div,
+                ConfigOption::Keep => super::get_hclk_div()
+            };
+            let clk_sys = self.get_final_clk_sys_freq()?;
+            Some(clk_sys / hclk_div as u32)
+            
         } else {
-            match self.hclk_div {
-                ConfigOption::Update(div) => {
-                    let clk_sys = self.get_final_clk_sys_freq()?;
-                    Some(clk_sys / div as u32)
-                },
-                ConfigOption::Keep => unreachable!(),
-            }
+            super::get_hclk_freq()
         }
     }
 
-    fn hclk_is_keep(&self) -> bool {
-        if self.hclk_div.is_update() && self.clk_sys_sel.is_update() {
+    fn hclk_is_update(&self) -> bool {
+        if self.hclk_div.is_update() || self.clk_sys_sel.is_update() {
             return true
         }
 
-        let is_keep = match super::get_clk_sys_source() {
+        match super::get_clk_sys_source() {
             ClkSysSel::Hrc48 => false,
             ClkSysSel::Hxt48 => false,
             ClkSysSel::Dbl96 => todo!(),
             ClkSysSel::Dll1 => self.dll1.is_update()
-        };
-        if is_keep { return true };
-
-        false
+        }
     }
 
     fn get_final_dll1_enable(&self) -> bool {
         if let ConfigOption::Update(dll1) = &self.dll1 {
-            if dll1.enable {
-                true
-            } else {
-                false
-            }
+            dll1.enable
         } else {
             super::get_clk_dll1_freq().is_some()
         }
