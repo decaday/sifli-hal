@@ -14,6 +14,9 @@ target/
 # Visual Studio Code
 .vscode/
 
+sifli-hal/Cargo.lock
+examples/**/Cargo.lock
+
 scripts/output/
 output/
 temp/

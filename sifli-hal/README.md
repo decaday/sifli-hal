@@ -17,7 +17,7 @@ Rust Hardware Abstraction Layer (HAL) and [Embassy](https://github.com/embassy-r
 
 > [!WARNING]
 > 
-> This crate is a working-in-progress and not ready for production use.This project is still in its early stages and is **not** yet usable.
+> This crate is a working-in-progress and not ready for production use.
 
 ## Get Started
 
@@ -50,13 +50,11 @@ Rust Hardware Abstraction Layer (HAL) and [Embassy](https://github.com/embassy-r
 
 ## Features
 
-- `defmt` or `log`: Debug log output.
-
-  TODO: Currently, `probe-rs` does not support `sf32` (WIP). I tried using `defmt` with Segger RTT but couldn't see the log output.
+- `defmt`, `log`: Debug log output.
 
 - `sf32lb52x`: Target chip selection. Currently, only `sf32lb52x` is supported.
 
-- `set-msplim`: Set the MSPLIM register in `__pre_init`. This register must be set before the main function’s stack setup (since the bootloader may have already configured it to a different value), otherwise, it will cause a HardFault.
+- `set-msplim`: Set the MSPLIM register in `__pre_init`. This register must be set before the main function’s stack setup (since the bootloader may have already configured it to a different value), otherwise, it will cause a HardFault [SiFli-SDK #32](https://github.com/OpenSiFli/SiFli-SDK/issues/32).
 
   This feature will be removed after [cortex-m-rt #580](https://github.com/rust-embedded/cortex-m/pull/580)  is released.
 
